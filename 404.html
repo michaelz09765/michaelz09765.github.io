@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Michael Zefi · Solutions Books</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<main>
+  <h1>Solutions Books</h1>
+  <p class="by" id="msg">Nothing here. <a href="/">See every book</a>.</p>
+</main>
+<script>
+// The links inside the books point to /go/<book>/<where> (BRAND_LINK in the master-study-pdf skill's brand.js).
+// GitHub Pages serves this page for any such path: Cloudflare counts the visit by its path, then the reader goes on.
+const TO = {
+  signup: 'https://forms.gle/qKyWaWmpUF7k1oc68',
+  qr: 'https://forms.gle/qKyWaWmpUF7k1oc68',
+  instagram: 'https://www.instagram.com/michaelzefi/',
+  email: 'https://mail.google.com/mail/?view=cm&fs=1&to=michaelzefi@gmail.com',
+};
+const where = (location.pathname.match(/^\/go\/(?:[a-z0-9-]+\/)?([a-z]+)\/?$/) || [])[1];
+if (TO[where]) {
+  let gone = false;
+  const go = () => { if (!gone) { gone = true; location.replace(TO[where]); } };
+  // give Cloudflare's beacon a moment to load and report the visit, but never hold the reader more than 1.5 s
+  addEventListener('load', () => setTimeout(go, 400));
+  setTimeout(go, 1500);
+  document.getElementById('msg').innerHTML = `Opening&hellip; <a href="${TO[where]}">Tap here</a> if nothing happens.`;
+}
+</script>
+<!-- Cloudflare Web Analytics: cookieless page counts -->
+<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "ca2990a3d44d46d8bcb8c4cfde848cd8"}'></script>
+</body>
+</html>
