@@ -1,0 +1,1619 @@
+<!doctype html>
+<html lang="en" data-layout="2" data-solutions="solutions.html">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ECN240 Mock Midterm 1</title>
+<!--
+  ECN240 Mock Midterm 1: the paper only (paid exam-pack edition). Its solution set is ECN240_Mock_Midterm_1_Solutions.src.html.
+  Written by a one-off script from the same question list as the solution set; edit by hand and keep each question box identical in both files.
+  Build:  node "C:/Users/micha/.claude/skills/master-study-pdf/scripts/build.js" Source/ECN240_Mock_Midterm_1.src.html PDF   (run in Revision, then move the .html from PDF to HTML)
+  Format: the real 2026 midterm's: 19 MCQs, options a-d, 5 marks each, Q1.14 (trial balance) 10 marks, 60 minutes, Lectures 1-6.
+  Numbering: 1.1-1.19 (mock number . question), so no number clashes with the real test's 1-19.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f1e8;
+  --bg-2: #ede6d3;
+  --ink: #1a1a1a;
+  --ink-soft: #3d3a36;
+  --muted: #6b6358;
+  --rule-soft: #c9c0ad;
+  --paper: #fdfaf1;
+  --formula-bg: #fffdf5;
+  --highlight: #f4e4b8;
+  --burgundy: #8b2635;
+  --forest: #1e4d3b;
+  --ochre: #c76b2f;
+  --navy: #2d4a7c;
+  --accent: var(--ink);
+  --tint: #efe9dc;
+  /* box roles (rule A3): colour only where it means something */
+  --ans-bg: #fcecbd;  --ans-bg2: #fff8e2;        /* answer: gold */
+  --intu-bg: #e7f3eb; --intu-ink: #1e4d3b;       /* intuition, plain words: green */
+  --pit-bg: #fbe9e8;  --pit-ink: #a3322c;        /* pitfall: red */
+  --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --sans: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  --mono: 'JetBrains Mono', Consolas, monospace;
+}
+/* section accents: one per question/part, cycle c1..c4 */
+.c1 { --accent: var(--burgundy); --tint: #f3e3e5; }
+.c2 { --accent: var(--forest);   --tint: #dfece5; }
+.c3 { --accent: var(--ochre);    --tint: #f8e6d6; }
+.c4 { --accent: var(--navy);     --tint: #e0e7f2; }
+
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body {
+  margin: 0; background: #fff; color: var(--ink);
+  font-family: var(--sans); font-size: 14px; line-height: 1.55;
+}
+.page-wrap { max-width: 794px; margin: 0 auto; }
+p { margin: 0 0 .6rem; }
+
+/* ---------- math visibility (no raw LaTeX flash) ---------- */
+.formula-render, .tex { opacity: .15; transition: opacity .4s; }
+body.math-ready .formula-render, body.math-ready .tex { opacity: 1; }
+mjx-container { font-size: 1.02em !important; }
+mjx-container[display="true"] { margin: .35em 0 !important; text-align: left !important; }
+
+/* ---------- cover ---------- */
+.cover {
+  position: relative; border: 2px solid var(--ink); background: var(--paper);
+  padding: 2.5rem 3.2rem 2.8rem;
+}
+.cover .kicker {
+  font: 500 .7rem var(--mono); letter-spacing: .36em; color: var(--muted);
+  text-transform: uppercase; margin-bottom: 1.35rem;
+}
+.cover h1 {
+  font-family: var(--serif); font-weight: 400; font-size: 3.15rem; line-height: 1.03;
+  letter-spacing: -.02em; margin: 0 0 1.15rem; font-variation-settings: "opsz" 144;
+}
+.cover h1 em { color: var(--burgundy); font-style: italic; }
+.cover .sub {
+  font-family: var(--serif); font-style: italic; font-size: 1.22rem; line-height: 1.5;
+  color: var(--ink-soft); margin: 0 0 1.35rem; max-width: 36rem;
+}
+.cover .mods { display: flex; flex-wrap: wrap; gap: .9rem 2.2rem; font: .78rem var(--mono); color: var(--muted); }
+.cover .mods span::before { content: "\2013\00a0 "; color: var(--ink); font-weight: 700; }
+.cover::after {
+  content: ""; position: absolute; left: 1.9rem; bottom: 1.25rem;
+  width: 4.4rem; height: 3px; background: var(--ink);
+}
+
+/* ---------- panels (legend, contents, key) ---------- */
+.panel { border: 1px solid var(--ink); background: var(--paper); padding: 1.15rem 2.1rem; margin-top: 1.2rem; break-inside: avoid; }
+.legend { display: flex; flex-wrap: wrap; gap: .6rem 1.45rem; font-size: .88rem; }
+.legend span { display: inline-flex; align-items: center; gap: .55rem; }
+.legend i { width: 15px; height: 15px; display: inline-block; }
+.legend b { font-weight: 600; }
+.toc { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem 2.6rem; }
+.toc.three { grid-template-columns: repeat(3, 1fr); gap: 1.1rem 1.1rem; }   /* five or six questions */
+.toc.four { grid-template-columns: repeat(4, 1fr); gap: 1.1rem .9rem; }    /* seven or eight questions */
+.toc.four .toc-col { padding-left: .75rem; }
+.toc-col { border-left: 4px solid var(--accent); padding: .1rem 0 .1rem 1.1rem; }
+.toc-col .code { font: .72rem var(--mono); letter-spacing: .16em; color: var(--muted); }
+.toc-col .name { font-family: var(--serif); font-size: 1.2rem; margin: .2rem 0 .3rem; }
+.toc-col ul { list-style: none; margin: 0; padding: 0; font-size: .9rem; color: var(--ink-soft); line-height: 1.72; }
+.keyrow { display: grid; grid-template-columns: 3.6rem 1fr 3.6rem 1fr; gap: .6rem 1rem; align-items: center; font-size: .9rem; color: var(--ink-soft);
+  border-top: 1px dotted var(--rule-soft); margin-top: .85rem; padding-top: .85rem; }
+.swatch { height: 1.45rem; background: linear-gradient(135deg, var(--formula-bg), #fdf8ea); border: 1px solid var(--ink); }
+.swatch.imp { border-width: 2px; background: linear-gradient(135deg, var(--ans-bg2), var(--ans-bg)); box-shadow: 3px 3px 0 var(--burgundy); }
+.swatch.idea { border-color: var(--burgundy); border-left-width: 5px; background: #faf4e8; }
+.swatch.dash { border-style: dashed; border-color: var(--intu-ink); background: var(--intu-bg); }
+.swatch.q { border: 1px solid var(--rule-soft); border-left: 4px solid var(--burgundy); background: #fff; }
+.swatch.pit { border-style: dashed; border-color: var(--pit-ink); background: linear-gradient(90deg, var(--pit-ink) 0 26%, var(--pit-bg) 26%); }
+.swatch.veil { border-style: dashed; background: var(--bg-2); }
+.keyrow:first-child { border-top: 0; margin-top: 0; padding-top: 0; }
+
+/* ---------- module + question headers ---------- */
+section.module { break-before: page; }
+.module-header {
+  display: flex; align-items: baseline; gap: 2rem;
+  border-top: 4px solid var(--ink); border-bottom: 1px solid var(--ink);
+  padding: 1.5rem 0 1.3rem; margin-bottom: 1.6rem;
+}
+.module-header .code { font-family: var(--serif); font-size: 3.7rem; line-height: 1; color: var(--burgundy); font-weight: 400; }
+.module-header .title { font-family: var(--serif); font-style: italic; font-size: 1.75rem; color: var(--ink-soft); }
+.module-header .count { margin-left: auto; font: .74rem var(--mono); letter-spacing: .26em; color: var(--muted); }
+
+.week { break-before: page; }
+.week-header {
+  display: flex; align-items: baseline; gap: 1.1rem;
+  border-bottom: 1px dashed var(--rule-soft); padding-bottom: .95rem; margin-bottom: 1.5rem;
+}
+.week-number {
+  background: var(--accent); color: #fff; font: 700 .74rem var(--mono); letter-spacing: .16em;
+  padding: .38rem .75rem; position: relative; top: -.25rem; white-space: nowrap;
+}
+.week-title { font-family: var(--serif); font-size: 1.8rem; letter-spacing: -.01em; line-height: 1.15; white-space: nowrap; }
+.week-topic { margin-left: auto; font-family: var(--serif); font-style: italic; font-size: .98rem; color: var(--muted); text-align: right; }
+
+/* ---------- question statement ---------- */
+.question {
+  background: #fff; border: 1px solid var(--rule-soft); border-left: 4px solid var(--accent);
+  padding: .9rem 1.35rem .95rem; margin-bottom: .85rem; break-inside: avoid;
+}
+.question .q-label { font: 700 .68rem var(--mono); letter-spacing: .18em; color: var(--accent); margin-bottom: .45rem; }
+.question p, .question li { font-family: var(--serif); font-size: 1.02rem; color: var(--ink-soft); line-height: 1.55; }
+.question ol { margin: .3rem 0 0; padding-left: 1.6rem; list-style: lower-alpha; }
+.question li { padding-left: .2rem; }
+.question p:last-child { margin-bottom: 0; }
+
+/* ---------- formula boxes ---------- */
+.formula-box {
+  border: 1px solid var(--ink);
+  background: linear-gradient(135deg, var(--formula-bg) 0%, #fdf8ea 100%);
+  padding: 1rem 1.3rem .95rem; margin-bottom: .85rem; break-inside: avoid; --role: var(--accent);
+}
+/* answer card (rule C2): bold box, filled tag and an offset shadow in the section colour */
+.formula-box.important {
+  border-width: 2px; background: linear-gradient(135deg, var(--formula-bg) 0%, #fff1cc 100%);
+  box-shadow: 5px 5px 0 var(--accent); margin-right: 5px; margin-bottom: calc(.85rem + 5px);
+}
+.formula-box.answer > .formula-label {   /* study.js adds .answer to bold boxes labelled "Answer" */
+  display: inline-block; background: var(--accent); color: #fff; padding: .22rem .55rem .2rem; letter-spacing: .14em;
+}
+.formula-box.answer > .formula-label::before { content: "\2713\00a0\00a0"; color: #fff; font: 700 .7rem var(--sans); }
+.formula-box.answer { background: linear-gradient(135deg, var(--ans-bg2) 0%, var(--ans-bg) 100%); }   /* gold = the answer (A3) */
+.formula-label { font: 700 .7rem var(--mono); letter-spacing: .13em; color: var(--muted); text-transform: uppercase; }
+.formula-label::before { content: "\00a7\00a0\00a0"; color: var(--accent); font-family: var(--serif); font-size: 1rem; font-weight: 400; }
+.formula-name { font-family: var(--serif); font-size: 1.15rem; margin: .3rem 0 .55rem; line-height: 1.3; }
+.formula-render {
+  background: #fff; border-left: 3px solid var(--accent); padding: .6rem 1.05rem;
+  margin: .5rem 0; line-height: 1.6; font-size: 1rem;
+}
+.formula-render .eqline { display: block; padding: .24rem 0; text-align: left; }
+.formula-render .eqline + .eqline { border-top: 1px dotted #e2ddd1; }
+.formula-render { --kw: 6.4rem; }
+.formula-render.steps { --kw: 1.3rem; }   /* numbered steps: narrow key column */
+.formula-render .eqline:has(> .k) { padding-left: calc(var(--kw) + .4rem); text-indent: calc(-1 * (var(--kw) + .4rem)); }
+.formula-render .eqline .k { display: inline-block; min-width: var(--kw); text-indent: 0; color: var(--muted); font-size: .82rem; font-family: var(--mono); letter-spacing: .06em; margin-right: .4rem; }
+.formula-note {
+  font-family: var(--serif); font-style: italic; font-size: .96rem; color: var(--muted);
+  border-left: 1px solid var(--rule-soft); padding: .1rem 0 .1rem .85rem; margin-top: .55rem; line-height: 1.55;
+}
+.formula-note b, .concept-text b { font-style: normal; color: var(--ink); font-weight: 600; }
+.where-block {   /* "in plain words": white panel, green bar (A3) */
+  --role: var(--intu-ink); background: #fff; border-left: 3px solid var(--intu-ink);
+  padding: .65rem 1rem; margin: .7rem 0 .2rem; font-family: var(--serif); font-size: .98rem; color: var(--ink-soft); line-height: 1.6;
+}
+.where-label { display: block; font: 700 .66rem var(--mono); letter-spacing: .14em; color: var(--intu-ink); margin-bottom: .3rem; }
+.tick { color: var(--forest); font-weight: 700; }
+.cross { color: var(--burgundy); font-weight: 700; }
+.verdict { color: var(--accent); font-weight: 600; }
+
+/* ---------- concept boxes (rule A3): intuition green (dashed), pitfall red (dashed), big idea burgundy (solid) ---------- */
+.concept-box {
+  --role: var(--intu-ink); border: 1px dashed var(--intu-ink); background: var(--intu-bg);
+  padding: .9rem 1.3rem .95rem; margin-bottom: .85rem; break-inside: avoid;
+}
+.concept-box.pitfall { --role: var(--pit-ink); border-color: var(--pit-ink); background: var(--pit-bg); }
+.concept-box.idea { --role: var(--burgundy); border: 1px solid var(--burgundy); border-left-width: 5px; background: #faf4e8; }   /* study.js adds .idea */
+/* label = short tag + serif hook; study.js splits "The intuition: <hook>" into the two (rule C3) */
+.concept-label {
+  display: flex; align-items: center; gap: .6rem; margin-bottom: .5rem;
+  font: 600 1.06rem/1.3 var(--serif); color: var(--ink);
+}
+.concept-label .tag {
+  font: 700 .6rem var(--mono); letter-spacing: .16em; text-transform: uppercase; white-space: nowrap;
+  padding: .24rem .5rem .2rem; background: var(--role); color: #fff;
+}
+.concept-box.pitfall .tag::before { content: "!\00a0\00a0"; }
+.concept-text { font-family: var(--serif); font-size: 1rem; color: var(--ink-soft); line-height: 1.55; }
+
+/* ---------- digestible text (rules L1-L4) ---------- */
+.concept-text p, .where-block p { margin: 0 0 .4rem; }
+.concept-text p:last-child, .where-block p:last-child { margin-bottom: 0; }
+p.lead { font: 600 1.05rem/1.45 var(--serif); color: var(--ink); }
+ul.pts, ul.wr { list-style: none; margin: .3rem 0 0; padding: 0; font-family: var(--serif); font-size: 1rem; line-height: 1.5; color: var(--ink-soft); }
+ul.pts li { position: relative; padding-left: 1.1rem; margin: .28rem 0; }
+ul.pts li::before { content: ""; position: absolute; left: .1rem; top: .58em; width: .38rem; height: .38rem; background: var(--role, var(--accent)); }
+ul.pts li b, ul.wr li b { color: var(--ink); font-weight: 600; }
+.formula-box > ul.pts { margin-top: .5rem; }
+ul.wr li { position: relative; padding-left: 1.4rem; margin: .3rem 0; }
+ul.wr li::before { position: absolute; left: 0; top: 0; font: 700 .95rem/1.55 var(--sans); }
+ul.wr li.no::before { content: "\2717"; color: var(--pit-ink); }
+ul.wr li.yes::before { content: "\2713"; color: var(--forest); }
+ul.wr li.no { color: var(--muted); }
+.trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: .65rem; margin: .7rem 0 .55rem; }
+.trio.two { grid-template-columns: repeat(2, 1fr); }
+.trio > div { background: #fff; border: 1px solid var(--rule-soft); border-top: 3px solid var(--role, var(--accent)); padding: .5rem .6rem .55rem; text-align: center; }
+.trio b { display: block; font: 700 .6rem var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--role, var(--accent)); }
+.trio .rule { font: 1.08rem/1.4 var(--serif); color: var(--ink); margin: .3rem 0 .1rem; }
+.trio small { font: italic .86rem var(--serif); color: var(--muted); }
+table.plan.vs td:first-child { font-size: .95rem; }
+table.plan.qref td:first-child { white-space: nowrap; }
+table.plan td.ref { font: .7rem var(--mono); letter-spacing: .06em; color: var(--muted); white-space: nowrap; text-align: right; }   /* toolkit quick reference: where it is explained (B2) */
+
+/* ---------- cell chips + small bits ---------- */
+.cell {
+  font: 500 .86em var(--mono); background: #f3ecdc; border: 1px solid #e0d5bd;
+  padding: 0 .28em; border-radius: 2px; white-space: nowrap; font-style: normal;
+}
+.cell.p { background: var(--tint); border-color: var(--accent); color: var(--accent); }
+
+/* ---------- figures ---------- */
+.figure { background: #fff; border: 1px solid var(--rule-soft); padding: .85rem .9rem .6rem; margin: 0 0 .85rem; break-inside: avoid; }
+.figure .kites > div { width: 136px; flex: none; }
+.figure .row { display: flex; justify-content: center; align-items: flex-start; gap: 1.6rem; flex-wrap: wrap; }
+.fig-caption { font: .66rem var(--mono); letter-spacing: .14em; color: var(--muted); text-transform: uppercase; text-align: center; margin-top: .65rem; }
+.sub-cap { font: .64rem var(--mono); letter-spacing: .08em; color: var(--muted); text-align: center; margin-top: .35rem; line-height: 1.45; }
+.sub-cap b { color: var(--ink); font-weight: 700; }
+.figure-key { display: flex; justify-content: center; gap: 1.4rem; flex-wrap: wrap; font: .66rem var(--mono); color: var(--muted); letter-spacing: .06em; margin-top: .55rem; }
+.figure-key i { display: inline-block; width: 12px; height: 12px; vertical-align: -2px; margin-right: .35rem; }
+
+/* game trees: svg lines + positioned MathJax labels */
+.tree { position: relative; margin: 0 auto; }
+.tree svg { position: absolute; left: 0; top: 0; overflow: visible; }
+.tree .edge { stroke: var(--ink); stroke-width: 1.1; }
+.tree .edge.on { stroke: var(--accent); stroke-width: 3; stroke-linecap: round; }
+.tree .node { fill: var(--ink); }
+.tree .root { fill: none; stroke: var(--ink); stroke-width: 1.1; }
+.tree .tl { position: absolute; transform: translate(-50%, -50%); white-space: nowrap; line-height: 1; }
+.tree .tl.who { font-family: var(--serif); font-size: .98rem; }
+.tree .tl.pay { font-size: .95rem; }
+.tree .tl.pay.on { background: var(--highlight); padding: 3px 4px; outline: 1px solid var(--accent); }
+.tree .tl.tag { font: 700 .68rem var(--mono); color: var(--accent); background: var(--tint); padding: 2px 4px; letter-spacing: .02em; }
+.tree .tl.tag.term { color: var(--muted); background: none; font-weight: 500; }
+.tree .tl.val { font-size: .74rem; color: var(--accent); background: var(--tint); padding: 3px 5px; border-radius: 9px; }
+.tree .edge.fade { stroke: #c9c0ad; }
+.tree .iset { stroke: var(--ink); stroke-width: 1.5; stroke-dasharray: .5 4.5; stroke-linecap: round; }
+.tree .band { fill: var(--tint); stroke: var(--accent); stroke-width: 1.2; stroke-dasharray: 5 3; }
+.tree .tl.prob { font-size: .86rem; }
+.tree .tl.term { font: 500 .7rem var(--mono); color: var(--muted); }
+.tree .tl.note { font: 700 .66rem var(--mono); color: var(--accent); letter-spacing: .04em; }
+.tree .tl.big { font: 600 1.25rem var(--serif); color: var(--accent); }
+.tree .tl.ink { font: .92rem var(--serif); color: var(--ink); }
+
+/* plots (drawPlot): same label system as trees */
+.plot .axis { fill: none; stroke: var(--ink); stroke-width: 1.1; }
+.plot .curve { fill: none; stroke: var(--ink); stroke-width: 1.4; }
+.plot .curve.on { stroke: var(--accent); stroke-width: 2.4; }
+.plot .curve.dash { stroke-dasharray: 5 4; }
+.plot .curve.faint { stroke: var(--rule-soft); stroke-width: 1; }
+.plot .region { fill: var(--tint); }
+.plot .region.on { fill: var(--accent); }
+.plot .guide { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 1.5 3; }
+.plot .dot { fill: var(--accent); }
+.plot .dot.hollow { fill: #fff; stroke: var(--muted); stroke-width: 1.3; }
+.tree .tl.ax { font-size: .8rem; color: var(--muted); }
+.tree .tl.ax.right { transform: translate(-100%, -50%); }
+
+/* strategic-form tables */
+table.sf { border-collapse: collapse; margin: .2rem auto .1rem; font-family: var(--serif); }
+table.sf th { font: 500 .78rem var(--mono); color: var(--muted); padding: .35rem .8rem; letter-spacing: .04em; }
+table.sf th:not(.corner) { font: italic 400 1.02rem var(--serif); color: var(--ink); letter-spacing: 0; }
+table.sf th.corner { font-size: .66rem; text-align: left; }
+table.sf td { padding: .38rem .8rem; text-align: center; border-top: 1px dotted #e2ddd1; white-space: nowrap; }
+table.sf thead th { border-bottom: 1px solid var(--ink); }
+table.sf tbody th { border-right: 1px solid var(--ink); text-align: right; }
+table.sf td.bi { background: var(--highlight); outline: 1.5px solid var(--accent); outline-offset: -1.5px; }
+mjx-container .best { color: var(--accent); font-weight: 700; }
+.sf-row { display: flex; justify-content: center; align-items: flex-start; gap: .9rem 2.2rem; flex-wrap: wrap; }
+.sf-row table.sf { margin: .2rem 0; }
+table.sf td.v { text-align: left; font-family: var(--sans); font-size: .86rem; color: var(--ink-soft); padding-left: 1.1rem; }
+table.sf tr.dim th, table.sf tr.dim td:not(.v) { color: #9b9384; }
+/* probability margins of a mixed-strategy table (ECN214 Topic 4): td.pm holds π beside a row, tr.pm holds σ under the columns */
+table.sf td.pm { color: var(--muted); text-align: left; padding-left: .5rem; border-top: none; }
+table.sf tr.pm td { color: var(--muted); border-top: 1px solid var(--rule-soft); padding-top: .3rem; }
+table.sf tr.pm th { border-right: none; }
+table.plan { border-collapse: collapse; width: 100%; font-size: .93rem; }
+mjx-container { text-transform: none; }   /* maths keeps its case inside upper-cased headers, labels and captions (rule D5) */
+table.plan th { font: 700 .64rem var(--mono); letter-spacing: .12em; color: var(--muted); text-align: left; padding: .35rem .5rem; border-bottom: 1px solid var(--ink); text-transform: uppercase; }
+table.plan td { padding: .5rem .5rem; border-top: 1px dotted #e2ddd1; vertical-align: middle; color: var(--ink-soft); }
+table.plan td:first-child { font-family: var(--serif); font-size: 1.05rem; color: var(--accent); font-weight: 600; }
+/* balance sheets (ECN240): numbers right-aligned, section rows, total rows, td.hl = changed today */
+table.plan.bs td { padding: .26rem .5rem; }
+table.plan.bs td:first-child { font: 400 .9rem var(--sans); color: var(--ink-soft); }
+table.plan.bs th:not(:first-child), table.plan.bs td:not(:first-child) { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+table.plan.bs tr.sec td { font: 700 .6rem var(--mono); letter-spacing: .12em; color: var(--accent); text-transform: uppercase; padding-top: .55rem; border-top: 0; }
+table.plan.bs tr.tot td { font-weight: 600; color: var(--ink); border-top: 1px solid var(--ink); }
+table.plan.bs td.hl { background: var(--tint); }
+table.plan.bs th.txt, table.plan.bs td.txt { text-align: left; white-space: normal; font-variant-numeric: normal; }   /* a text column among the numbers (tabular figures spaced out "non-current") */
+/* T accounts (ECN240 Topic 3), drawn like the lecture's: title (type), Dr | Cr row, date · other account · amount on
+   each side, a heavy rule under the Dr | Cr row and down the middle. .tgrid sets them two to a row */
+.tgrid { display: grid; grid-template-columns: 1fr 1fr; gap: .9rem 1rem; align-items: start; }
+.tgrid > * { min-width: 0; }
+table.tacc { border-collapse: collapse; width: 100%; table-layout: fixed; font-size: .75rem; font-variant-numeric: tabular-nums; break-inside: avoid; }
+table.tacc col:nth-child(3n+1) { width: 12%; } table.tacc col:nth-child(3n+2) { width: 23%; } table.tacc col:nth-child(3n) { width: 15%; }   /* date, account, amount: each side half */
+table.tacc caption { font: 600 .95rem var(--serif); color: var(--ink); text-align: left; padding: 0 0 .15rem .3rem; }
+table.tacc caption small { font: italic 400 .8rem var(--serif); color: var(--muted); margin-left: .35rem; }
+table.tacc th { font: 700 .58rem var(--mono); letter-spacing: .12em; color: var(--muted); text-align: left; padding: .1rem .24rem .2rem; border-bottom: 1.6px solid var(--ink); }
+table.tacc th + th { text-align: right; }
+table.tacc td { padding: .15rem .24rem; color: var(--ink-soft); white-space: nowrap; }
+table.tacc th + th, table.tacc td:nth-child(4) { border-left: 1.6px solid var(--ink); }
+table.tacc td:nth-child(3n+1) { font-size: .68rem; color: var(--muted); }   /* dates */
+table.tacc td:nth-child(3n) { text-align: right; }   /* amounts */
+table.tacc td:nth-child(3n+2) { white-space: normal; }   /* a long account name wraps when the column is too narrow */
+table.tacc td.hl { background: var(--tint); }
+/* a closed account (Topic 4): the totals row rules off both amounts, single line above, double below (slide 9 step 3) */
+table.tacc tr.tot td:nth-child(3n) { border-top: 1px solid var(--ink); border-bottom: 3px double var(--ink); color: var(--ink); font-weight: 600; }
+
+/* checklist */
+.check { list-style: none; margin: 0; padding: 0; }
+.check li { position: relative; padding: .5rem 0 .5rem 2rem; border-top: 1px dotted #e2ddd1; color: var(--ink-soft); }
+.check li:first-child { border-top: 0; }
+/* study.js puts a real checkbox in each line, and a print spot over it that scripts/check_boxes.py makes tickable */
+.check label { display: block; cursor: pointer; }
+.check input, .check-spot { position: absolute; left: .1rem; top: .72rem; width: 13px; height: 13px; margin: 0; }
+.check input { appearance: none; -webkit-appearance: none; border: 1.5px solid var(--ink); background: #fff; cursor: pointer; }
+.check input:checked { background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M1.6 5.3 4 7.6 8.5 2.3' fill='none' stroke='%231a1a1a' stroke-width='1.7'/%3E%3C/svg%3E") center / 100% no-repeat; }
+.check input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.check li:has(input:checked) { color: var(--muted); }
+.check li .ref { float: right; margin: .2rem 0 0 1rem; font: .7rem var(--mono); letter-spacing: .06em; color: var(--muted); }   /* the part that teaches the item (rule B6) */
+.check-spot { display: none; }
+
+.colophon { margin-top: 2.6rem; border-top: 3px solid var(--ink); padding-top: 1.4rem; text-align: center; }
+.colophon .fleuron { font-family: var(--serif); font-size: 1.6rem; }
+.colophon p { font-family: var(--serif); font-style: italic; color: var(--muted); font-size: .98rem; margin: .5rem 0 0; }
+
+/* ---------- part headers (built by study.js from the question's (a)(b)(c) list, rule C9) ---------- */
+.keep { break-inside: avoid; }
+.part-head {
+  display: grid; grid-template-columns: auto 1fr auto; gap: .85rem; align-items: center;
+  margin: 1.1rem 0 .75rem; padding-bottom: .55rem; border-bottom: 1.5px solid var(--accent);
+}
+.part-chips { display: flex; gap: .3rem; }
+.part-chip {
+  width: 2.05rem; height: 2.05rem; border-radius: 50%; display: grid; place-items: center; flex: none;
+  background: var(--accent); color: #fff; font: 600 1.15rem/1 var(--serif); padding-bottom: .12rem;
+}
+.part-ask { font: italic 1rem/1.45 var(--serif); color: var(--ink-soft); }
+.part-ask b { font-style: normal; font-weight: 600; color: var(--ink); }
+.tracker { display: flex; gap: .28rem; align-self: start; padding-top: .45rem; }
+.tracker i {
+  width: 1.2rem; height: 1.2rem; border-radius: 50%; display: grid; place-items: center;
+  border: 1px solid var(--rule-soft); font: 700 .58rem/1 var(--mono); font-style: normal; color: var(--muted);
+}
+.tracker i.done { border-color: var(--accent); color: var(--accent); background: var(--tint); }
+.tracker i.on { border-color: var(--accent); background: var(--accent); color: #fff; }
+
+/* jump links (rule K4): the text keeps its look; on screen a hover underline marks the link */
+a.jump { color: inherit; text-decoration: none; }
+@media screen {
+  a.jump:hover { text-decoration: underline; text-underline-offset: 2px; }
+  section.week, .part-chip { scroll-margin-top: 1rem; }
+}
+
+/* ---------- answers at a glance (rule C10): items in the source; label, cover and PDF spot added by study.js ---------- */
+.glance { border: 1px solid var(--ink); background: var(--paper); padding: .65rem 1.1rem .75rem; margin-bottom: .85rem; break-inside: avoid; }
+.glance-label { font: 700 .64rem var(--mono); letter-spacing: .16em; color: var(--muted); margin-bottom: .55rem; text-transform: uppercase; }
+.glance-label span { font: italic .9rem var(--serif); letter-spacing: 0; text-transform: none; margin-left: .5rem; }
+.glance-grid { position: relative; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: .8rem; }
+.glance.three .glance-grid { grid-auto-flow: row; grid-template-columns: repeat(3, 1fr); row-gap: .7rem; }   /* seven or more parts */
+.glance-grid > div { border-left: 3px solid var(--accent); padding-left: .65rem; font-size: .84rem; line-height: 1.42; color: var(--ink-soft); }
+.glance-grid > div > b:first-child { display: block; font: 700 .7rem var(--mono); color: var(--accent); margin-bottom: .15rem; }
+.glance-cover, .glance-spot { position: absolute; inset: -5px -6px; z-index: 2; }
+.glance-spot { display: none; }
+.glance-cover {
+  display: grid; place-content: center; gap: .25rem; text-align: center; cursor: pointer; padding: 0;
+  background: var(--bg-2); border: 1px dashed var(--ink); color: var(--ink-soft); transform-origin: 10% 0;
+}
+.glance-cover:hover { background: #e7dcc2; }
+.glance-cover b { font: 700 .66rem var(--mono); letter-spacing: .22em; color: var(--accent); }
+.glance-cover i { font: italic .98rem var(--serif); }
+.glance-cover.fall { animation: glance-fall .9s cubic-bezier(.5, 0, .85, .35) forwards; pointer-events: none; }
+@keyframes glance-fall {
+  0% { transform: none; }
+  22% { transform: rotate(6deg); }
+  100% { transform: translateY(320px) rotate(28deg); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .glance-cover.fall { animation: glance-fade .3s forwards; }
+  @keyframes glance-fade { to { opacity: 0; } }
+}
+
+/* ---------- twin parts side by side, two-column toolkit (rules C11, B2) ---------- */
+.duo { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1.1rem; align-items: stretch; }
+.duo > * { min-width: 0; }
+.mini-head { display: flex; align-items: center; gap: .55rem; margin-bottom: .55rem; }
+.mini-head .part-chip { width: 1.6rem; height: 1.6rem; font-size: .95rem; }
+.mini-head span:last-child { font: 1.08rem/1.25 var(--serif); }
+table.sf td.hl { background: var(--tint); }
+.formula-render.short { --kw: 4.6rem; }
+.formula-render.verdicts { font-size: .95rem; }
+.formula-render.verdicts b { color: var(--accent); }
+
+/* ---------- the given facts of a long question (rule C13) ---------- */
+.given { display: flex; flex-wrap: wrap; align-items: baseline; gap: .4rem .45rem; margin: -.3rem 0 1rem; font-size: .86rem; color: var(--ink-soft); break-inside: avoid; }
+.given > b { font: 700 .62rem var(--mono); letter-spacing: .16em; color: var(--accent); text-transform: uppercase; margin-right: .25rem; }
+.given > span { background: var(--tint); padding: .1rem .5rem .12rem; border-radius: 2px; }
+.given.src { margin: 0 0 .85rem; }   /* "From the table" strip under a part header (rule C15) */
+
+/* ---------- Question button in a part header and its popover (rule K5, screen only) ---------- */
+.q-peek {
+  font: 700 .56rem/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--accent); background: #fff;
+  border: 1px solid var(--accent); border-radius: 999px; padding: .28rem .6rem; margin-left: .45rem; cursor: pointer;
+}
+.q-peek:hover { background: var(--tint); }
+.q-pop { width: min(690px, 94vw); max-height: 86vh; overflow: auto; padding: 0 0 .1rem; border: 1px solid var(--ink); background: #fff; }
+.q-pop::backdrop { background: rgba(0, 0, 0, .6); }
+.q-pop .question { margin: 0; border-top: 0; border-right: 0; border-bottom: 0; }
+.q-pop .figure, .q-pop .given { margin: .6rem 1rem; }
+
+/* ---------- one line that asks the reader to try a step first (rule C12) ---------- */
+.try {
+  font: italic .98rem/1.5 var(--serif); color: var(--ink-soft); margin: 0 0 .75rem; break-inside: avoid;
+  border-top: 1px dotted var(--rule-soft); border-bottom: 1px dotted var(--rule-soft); padding: .35rem .2rem;
+}
+.try::before { content: "TRY IT"; font: 700 .62rem var(--mono); letter-spacing: .16em; color: var(--accent); font-style: normal; margin-right: .6rem; }
+
+/* ---------- numbered callouts tying a picture to a list (rule C14) ---------- */
+.tree .tl.callout, .num {
+  display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 50%;
+  background: var(--accent); color: #fff; font: 700 .64rem/1 var(--mono); font-style: normal;
+}
+.num { margin-right: .45rem; vertical-align: 1px; }
+.split { display: grid; grid-template-columns: 1fr auto; gap: 1.1rem; align-items: center; }
+.split .figure { margin: 0; }
+
+/* ---------- code: R and Python lines, console output (inline <code>, block <pre class="code">) ---------- */
+code { font: 500 .86em var(--mono); background: #f3ecdc; padding: 0 .28em; border-radius: 2px; white-space: nowrap; }
+pre.code {
+  font: .8rem/1.5 var(--mono); background: #fff; border-left: 3px solid var(--accent); color: var(--ink);
+  padding: .55rem 1rem; margin: .5rem 0; white-space: pre-wrap; overflow-wrap: anywhere; break-inside: avoid;
+}
+code, pre.code { font-variant-ligatures: none; }   /* JetBrains Mono would draw == as one bar and <- as an arrow: show what you type */
+pre.code .out { color: var(--muted); }   /* what the console prints back */
+pre.code .cm { color: var(--accent); }   /* # comments */
+
+/* ---------- screen: the standalone HTML reads as white pages on a near-black desk (rule K1) ---------- */
+@media screen {
+  html { background: #121110; color-scheme: dark; }
+  body { background: #121110; padding: 28px 16px 72px; }
+  .page-wrap { max-width: 800px; }
+  .sheet, section.module, section.week {
+    background: #fff; color: var(--ink); padding: 44px 56px 40px; margin: 0 auto 26px;
+    border-radius: 3px; box-shadow: 0 12px 36px rgba(0, 0, 0, .5);
+  }
+  .brand-end { max-width: 800px; margin: 0 auto; border-radius: 3px; }
+  .figure { overflow-x: auto; }
+}
+@media screen and (max-width: 760px) {
+  body { padding: 10px 6px 64px; }
+  .sheet, section.module, section.week { padding: 22px 14px 18px; margin-bottom: 14px; }
+  .cover { padding: 1.6rem 1.3rem 2rem; }
+  .cover h1 { font-size: 2.4rem; }
+  .panel { padding: 1rem 1.1rem; }
+  .toc, .toc.three, .toc.four, .duo, .split, .trio, .trio.two, .tgrid { grid-template-columns: 1fr; }
+  .keyrow { grid-template-columns: 3rem 1fr; }
+  .week-header, .module-header { flex-wrap: wrap; gap: .6rem 1rem; }
+  .week-title { white-space: normal; }
+  .glance-grid, .glance.three .glance-grid { grid-auto-flow: row; grid-template-columns: 1fr; }
+  .part-head { grid-template-columns: auto 1fr; }
+  .tracker { display: none; }
+  /* wide maths, tables and figures scroll inside their own box instead of widening the page */
+  .figure, .formula-render, .question, .where-block, .sf-row { overflow-x: auto; }
+  .figure .row, .sf-row { justify-content: safe center; }
+  mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; max-width: 100%; }
+}
+
+/* ---------- end page (words and contacts filled by brand.js) ---------- */
+@page brand-end { background: #f5f1e8; }
+.brand-end { display: flex; align-items: center; padding: 16mm 15mm; background: var(--bg); }
+.be-inner { position: relative; width: 100%; border: 2px solid var(--ink); background: var(--paper); padding: 3rem 3.3rem 2.4rem; }
+.be-kicker { font: 500 .7rem var(--mono); letter-spacing: .3em; color: var(--muted); text-transform: uppercase; margin-bottom: 1.3rem; }
+.be-title { font: 400 3.1rem/1.04 var(--serif); letter-spacing: -.02em; margin: 0 0 1.3rem; font-variation-settings: "opsz" 144; }
+.be-title em { color: var(--burgundy); }
+.be-lead { font: italic 1.18rem/1.6 var(--serif); color: var(--ink-soft); margin: 0 0 1.8rem; max-width: 34rem; }
+.be-lead b { font-style: normal; font-weight: 600; color: var(--ink); }
+.be-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.8rem; }
+.be-card { display: flex; align-items: center; gap: 1rem; border: 1px solid var(--ink); background: #fff; padding: 1rem 1.1rem; color: var(--ink); text-decoration: none; }
+.be-card svg { width: 42px; height: 42px; flex: none; }
+.be-card span { display: flex; flex-direction: column; min-width: 0; }
+.be-card small { font: 700 .62rem var(--mono); letter-spacing: .16em; color: var(--muted); text-transform: uppercase; }
+.be-card b { font: 500 1.08rem var(--serif); margin: .15rem 0; }
+.be-card i { font: italic .9rem var(--serif); color: var(--muted); }
+.be-asks { list-style: none; margin: 0 0 2rem; padding: 1.1rem 0 0; border-top: 1px dotted var(--rule-soft); display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.be-asks li { font-size: .9rem; color: var(--ink-soft); padding-left: 1.1rem; position: relative; line-height: 1.45; }
+.be-asks li::before { content: "\2013"; position: absolute; left: 0; color: var(--burgundy); font-weight: 700; }
+.be-asks b { color: var(--ink); font-weight: 600; }
+.be-exam { display: grid; grid-template-columns: 1fr auto; gap: 1.4rem; border: 2px solid var(--burgundy); background: #fff; padding: 1.3rem 1.4rem; margin-bottom: 1.6rem; }
+.be-exam small { font: 700 .62rem var(--mono); letter-spacing: .16em; color: var(--burgundy); text-transform: uppercase; }
+.be-exam h3 { font: 500 1.5rem var(--serif); margin: .3rem 0 .7rem; color: var(--ink); }
+.be-exam ul { list-style: none; margin: 0 0 1rem; padding: 0; display: grid; gap: .35rem; }
+.be-exam li { font-size: .92rem; color: var(--ink-soft); padding-left: 1.1rem; position: relative; }
+.be-exam li::before { content: "\2013"; position: absolute; left: 0; color: var(--burgundy); font-weight: 700; }
+.be-exam li b { color: var(--ink); }
+.be-cta { font: italic 1.02rem var(--serif); color: var(--ink); margin: 0 0 .35rem; }
+.be-link { font: 600 .95rem var(--mono); color: var(--burgundy); text-decoration: none; }
+.be-qr { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .5rem; }
+.be-qr svg { width: 128px; height: 128px; }
+.be-qr i { font: italic .82rem var(--serif); color: var(--muted); }
+.be-legal { font: .66rem var(--mono); letter-spacing: .06em; color: var(--muted); border-top: 3px solid var(--ink); padding-top: 1rem; margin: 0; }
+
+@media print {
+  .week { break-before: page !important; }
+  .formula-box, .concept-box, .figure, .question { break-inside: avoid !important; }
+  .formula-render, .tex { opacity: 1 !important; }
+  .glance-cover, .q-peek { display: none !important; }
+  .glance-spot { display: block; }   /* Chrome prints it as a link: scripts/glance_covers.py swaps it for the PDF cover */
+  .check-spot { display: block; }    /* likewise: scripts/check_boxes.py swaps it for a PDF checkbox */
+  /* MathJax keeps a hidden copy of each formula for screen readers, placed absolutely. Inside a figure label the
+     print engine measures that copy before the label's centring transform, so a maths label near the right page
+     edge made Chrome shrink the whole PDF (ECN214 Topic 6 printed at 99.1%, ECN224 Topic 6 at 98.3%). Paper has no
+     screen reader: leave the copy out of the print. */
+  .tree .tl mjx-assistive-mml { display: none !important; }
+}
+</style>
+<script>
+/* master-study-pdf shared runtime.
+   Inlined into every document by scripts/build.js (<!-- @study --> marker).
+   Provides: MathJax config + loader, svgEl, cssVar, tl, drawTree, drawPlot, drawCrowd, the layout pass
+   (studyLayout: screen sheets, concept tags, part headers, answers at a glance) and the typeset/ready signal. */
+
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']],
+    processEscapes: true,
+    packages: { '[+]': ['ams'] },
+    macros: { best: ['\\class{best}{\\underline{#1}}', 1] }   // a best-response payoff: underlined, section accent
+  },
+  chtml: { scale: 1.02, minScale: 0.8, matchFontHeight: false },
+  startup: { typeset: false }
+};
+(function () {
+  const s = document.createElement('script');
+  s.id = 'MathJax-script';
+  s.async = true;
+  s.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js';
+  document.head.appendChild(s);
+})();
+
+const NS = 'http://www.w3.org/2000/svg';
+function svgEl(tag, attrs, parent) {
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function cssVar(v, el) { return getComputedStyle(el || document.documentElement).getPropertyValue(v).trim(); }
+/* absolutely positioned label (MathJax allowed) inside a .tree/.plot container */
+function tl(el, x, y, html, cls) {
+  const d = document.createElement('div');
+  d.className = 'tl ' + (cls || '');
+  d.style.left = x + 'px';
+  d.style.top = y + 'px';
+  d.innerHTML = html;
+  el.appendChild(d);
+}
+
+/* ---- small SVG charts shared by many books (rule E2). A document that declares a function of the same name keeps
+   its own copy: the older library books do. ----
+   svgText(svg, x, y, text, attrs)   one line of SVG text, centred on y
+   svgSans(size, fill, extra) / svgMono(size, fill, extra)   attrs for body text and for mono caps labels */
+function svgText(svg, x, y, t, a) {
+  const e = svgEl('text', Object.assign({ x, y, 'dominant-baseline': 'central' }, a), svg);
+  e.textContent = t;
+  return e;
+}
+function svgSans(size, fill, extra) { return Object.assign({ 'font-family': cssVar('--sans'), 'font-size': size, fill }, extra); }
+function svgMono(size, fill, extra) {
+  return Object.assign({ 'font-family': cssVar('--mono'), 'font-size': size, 'font-weight': 700, 'letter-spacing': '.06em', fill }, extra);
+}
+
+/* drawHBars(id, { w, max, label: 140, right: 120, rows: [{ label, segs: [[value, kind, text], ...], total }] })
+   Horizontal bars split into segments: a whole and its parts, or groups compared on one scale.
+   kind: 'on' accent | 'tint' | 'grey' | 'gap' (white, dashed outline: what is missing). A '|' in a segment's text
+   stacks it on two lines. total: a mono label after the bar. label / right: px kept for the row names and totals. */
+function drawHBars(id, spec) {
+  const el = document.getElementById(id);
+  el.classList.add('tree');
+  const L = spec.label || 140, R = spec.w - (spec.right || 120), bh = 28, dy = 42, H = spec.rows.length * dy - 8;
+  el.style.width = spec.w + 'px';
+  el.style.height = H + 'px';
+  const svg = svgEl('svg', { width: spec.w, height: H }, el);
+  const acc = cssVar('--accent', el), tint = cssVar('--tint', el);
+  const fills = { on: acc, tint, grey: '#ded7c8', gap: '#fff' };
+  spec.rows.forEach((r, i) => {
+    const y = i * dy;
+    svgText(svg, L - 12, y + bh / 2, r.label, svgSans(12.5, '#1a1a1a', { 'text-anchor': 'end' }));
+    let x = L;
+    for (const [v, kind, text] of r.segs) {
+      const w = Math.max(v / spec.max * (R - L), 1.5);   // a sliver stays visible
+      svgEl('rect', { x, y, width: w, height: bh, fill: fills[kind], stroke: kind === 'gap' ? acc : '#fff',
+        'stroke-width': 1, 'stroke-dasharray': kind === 'gap' ? '4 3' : 'none' }, svg);
+      if (text) text.split('|').forEach((t, k, p) => svgText(svg, x + w / 2, y + bh / 2 + (k - (p.length - 1) / 2) * 12, t,
+        svgSans(11.5, kind === 'on' ? '#fff' : '#1a1a1a', { 'text-anchor': 'middle' })));
+      x += w;
+    }
+    if (r.total) svgText(svg, x + 9, y + bh / 2, r.total, svgMono(10.5, '#1a1a1a'));
+  });
+}
+
+/* drawBridge(id, { w, max, min: 0, label: 170, right: 70, dy: 32, rows: [{ label, from, to, kind, text }] })
+   A waterfall (rule E8): solid bars on a zero line, no connectors. kind: 'on' a total (accent) | 'down' a cost
+   (grey) | 'tint' income added (tint, accent outline). text: the mono label after the bar. A bar is at least 3px. */
+function drawBridge(id, spec) {
+  const el = document.getElementById(id);
+  el.classList.add('tree');
+  const L = spec.label || 170, R = spec.w - (spec.right || 70), bh = 22, dy = spec.dy || 32, H = spec.rows.length * dy - (dy - bh);
+  const lo = spec.min || 0;
+  el.style.width = spec.w + 'px';
+  el.style.height = H + 'px';
+  const svg = svgEl('svg', { width: spec.w, height: H }, el);
+  const acc = cssVar('--accent', el), tint = cssVar('--tint', el), muted = cssVar('--muted', el);
+  const X = v => L + (v - lo) / (spec.max - lo) * (R - L), fills = { on: acc, tint, down: '#ded7c8' };
+  svgEl('line', { x1: X(0), y1: 0, x2: X(0), y2: H, stroke: lo < 0 ? '#1a1a1a' : muted, 'stroke-width': 1 }, svg);
+  spec.rows.forEach((r, i) => {
+    const y = i * dy, x2 = X(Math.max(r.from, r.to)), x1 = Math.min(X(Math.min(r.from, r.to)), x2 - 3);
+    svgText(svg, L - 12, y + bh / 2, r.label, svgSans(12.5, '#1a1a1a', { 'text-anchor': 'end' }));
+    svgEl('rect', { x: x1, y, width: x2 - x1, height: bh, fill: fills[r.kind], stroke: r.kind === 'tint' ? acc : 'none', 'stroke-width': 1 }, svg);
+    svgText(svg, x2 + 8, y + bh / 2, r.text, svgMono(10.5, '#1a1a1a'));
+  });
+}
+
+/* ---- game trees: SVG lines + absolutely positioned MathJax labels ----
+   spec = {
+     w, h,
+     nodes: { id: { x, y,
+                    who: 'A',            // player label (omit for nodes inside a dotted set)
+                    root: true,          // double circle
+                    nature: true,        // Nature node, labelled \mathfrak{N}
+                    left: true,          // put the player label left of the node
+                    tag: [html, dx, dy, cls],   // extra label: cls 'tag' (history chip) | 'val' (BI value pill) | 'note'
+                    pay: '1,-1', on: true, hist: 'acg', end: true } },  // terminal: payoff, highlight, history caption; end:true = no payoff
+     edges: [ [from, to, 'TeX label', on, dx, dy] ],   // on: true (bold accent) | 'fade' | false; dx/dy override label offset
+     sets:  [ { nodes: [...], who: 'B', dots: true, band: false } ],  // information sets
+     labels: [ [x, y, html, cls] ]                      // free annotations
+   } */
+function drawTree(id, spec) {
+  const el = typeof id === 'string' ? document.getElementById(id) : id;
+  el.classList.add('tree');
+  el.style.width = spec.w + 'px';
+  el.style.height = spec.h + 'px';
+  const svg = svgEl('svg', { width: spec.w, height: spec.h }, el);
+  const label = (x, y, html, cls) => tl(el, x, y, html, cls);
+  const N = spec.nodes, sets = spec.sets || [];
+
+  for (const s of sets) {
+    if (!s.band) continue;
+    const xs = s.nodes.map(k => N[k].x), ys = s.nodes.map(k => N[k].y), p = s.pad || 17;
+    const x0 = Math.min(...xs) - p, y0 = Math.min(...ys) - p;
+    svgEl('rect', { x: x0, y: y0, width: Math.max(...xs) + p - x0, height: Math.max(...ys) + p - y0, rx: p, class: 'band' }, svg);
+  }
+  for (const [a, b, act, on, dx, dy] of spec.edges) {
+    const A = N[a], B = N[b];
+    const cls = on === true ? 'edge on' : on === 'fade' ? 'edge fade' : 'edge';
+    svgEl('line', { x1: A.x, y1: A.y, x2: B.x, y2: B.y, class: cls }, svg);
+    if (!act) continue;
+    const vertical = A.x === B.x;
+    const ox = dx !== undefined ? dx : vertical ? 10 : (B.x < A.x ? -11 : 11);
+    const oy = dy !== undefined ? dy : vertical ? 0 : -7;
+    label((A.x + B.x) / 2 + ox, (A.y + B.y) / 2 + oy, `\\(${act}\\)`, act.includes('mathbb') ? 'act prob' : 'act');
+  }
+  for (const s of sets) {
+    if (s.nodes.length < 2 || s.dots === false) continue;
+    const pts = s.nodes.map(k => N[k]).sort((p, q) => p.x - q.x);
+    const a = pts[0], b = pts[pts.length - 1];
+    svgEl('line', { x1: a.x, y1: a.y, x2: b.x, y2: b.y, class: 'iset' }, svg);
+    if (s.who) label((a.x + b.x) / 2, (a.y + b.y) / 2 - 11, s.who, 'who');
+  }
+  const lift = {};   // nodes in a one-node band get their labels pushed clear of the band
+  for (const s of sets) if (s.band && s.nodes.length === 1) lift[s.nodes[0]] = (s.pad || 17) + 9;
+  for (const k in N) {
+    const n = N[k];
+    if (n.pay !== undefined || n.end) {   // terminal node: payoff and/or terminal-history caption
+      if (n.pay) label(n.x, n.y + 13, `\\(\\langle ${n.pay} \\rangle\\)`, 'pay' + (n.on ? ' on' : ''));
+      if (n.hist) label(n.x, n.y + (n.pay ? 33 : 11), n.hist, 'tag term');
+      continue;
+    }
+    svgEl('circle', { cx: n.x, cy: n.y, r: 3, class: 'node' }, svg);
+    if (n.root) svgEl('circle', { cx: n.x, cy: n.y, r: 7, class: 'root' }, svg);
+    if (n.nature) label(n.x + 13, n.y - 12, '\\(\\mathfrak{N}\\)', 'who');
+    else if (n.who) {
+      if (n.left) label(n.x - Math.max(13, lift[k] || 0), n.y, n.who, 'who');
+      else label(n.x, n.y - Math.max(n.root ? 17 : 14, lift[k] || 0), n.who, 'who');
+    }
+    if (n.tag) label(n.x + n.tag[1], n.y + n.tag[2], n.tag[0], n.tag[3] || 'tag');
+  }
+  for (const [x, y, html, cls] of spec.labels || []) label(x, y, html, cls || 'note');
+}
+
+/* ---- plots: L-shaped axes, lines and shaded regions in data coordinates ----
+   spec = {
+     w, h, x: [x0, x1], y: [y0, y1], pad: [top, right, bottom, left],   // pad in px (default 14, 18, 30, 40)
+     xticks: [[value, 'TeX']], yticks: [[value, 'TeX']],   // tick marks + labels on the axes
+     xlab: 'TeX', ylab: 'TeX',                             // axis names (end of each axis)
+     fills:  [ { pts: [[x, y], ...], cls: '' } ],          // shaded region: '' section tint | 'on' accent (bars)
+     lines:  [ { pts: [[x, y], ...], cls: '' } ],          // cls: '' ink | 'on' bold accent | 'dash' | 'faint'
+     guides: [ [x, y] ],                                   // dotted drop lines from a point to both axes
+     dots:   [ [x, y] ],
+     labels: [ [x, y, 'html', cls, dx, dy] ]               // data coords + px offset; cls default 'note'
+   } */
+function drawPlot(id, spec) {
+  const el = typeof id === 'string' ? document.getElementById(id) : id;
+  el.classList.add('tree', 'plot');
+  el.style.width = spec.w + 'px';
+  el.style.height = spec.h + 'px';
+  const svg = svgEl('svg', { width: spec.w, height: spec.h }, el);
+  const [pt, pr, pb, pl] = spec.pad || [14, 18, 30, 40];
+  const [x0, x1] = spec.x, [y0, y1] = spec.y;
+  const X = v => pl + (v - x0) / (x1 - x0) * (spec.w - pl - pr);
+  const Y = v => spec.h - pb - (v - y0) / (y1 - y0) * (spec.h - pt - pb);
+  const path = pts => pts.map(([a, b], i) => (i ? 'L' : 'M') + X(a) + ' ' + Y(b)).join(' ');
+
+  for (const f of spec.fills || []) svgEl('path', { d: path(f.pts) + ' Z', class: 'region ' + (f.cls || '') }, svg);
+  for (const [a, b] of spec.guides || []) {
+    svgEl('line', { x1: X(a), y1: Y(b), x2: X(a), y2: Y(y0), class: 'guide' }, svg);
+    svgEl('line', { x1: X(a), y1: Y(b), x2: X(x0), y2: Y(b), class: 'guide' }, svg);
+  }
+  svgEl('path', { d: `M${X(x0)} ${Y(y1)} L${X(x0)} ${Y(y0)} L${X(x1)} ${Y(y0)}`, class: 'axis' }, svg);
+  for (const [v, t] of spec.xticks || []) {
+    svgEl('line', { x1: X(v), y1: Y(y0), x2: X(v), y2: Y(y0) + 4, class: 'axis' }, svg);
+    tl(el, X(v), Y(y0) + 15, `\\(${t}\\)`, 'ax');
+  }
+  for (const [v, t] of spec.yticks || []) {
+    svgEl('line', { x1: X(x0) - 4, y1: Y(v), x2: X(x0), y2: Y(v), class: 'axis' }, svg);
+    tl(el, X(x0) - 8, Y(v), `\\(${t}\\)`, 'ax right');
+  }
+  if (spec.xlab) tl(el, X(x1) + 18, Y(y0) + 15, `\\(${spec.xlab}\\)`, 'ax');
+  if (spec.ylab) tl(el, X(x0), Y(y1) - 10, `\\(${spec.ylab}\\)`, 'ax');
+  for (const l of spec.lines || []) svgEl('path', { d: path(l.pts), class: 'curve ' + (l.cls || '') }, svg);
+  for (const [a, b, c] of spec.dots || []) svgEl('circle', { cx: X(a), cy: Y(b), r: 3.5, class: 'dot ' + (c || '') }, svg);
+  for (const [a, b, html, cls, dx, dy] of spec.labels || []) tl(el, X(a) + (dx || 0), Y(b) + (dy || 0), html, cls || 'note');
+}
+
+/* ---- natural-frequency crowd (rule E6): people grouped by state, the ones who get the news filled in,
+   then gathered in a second row with the updated beliefs beside them ----
+   spec = { groups: [[letter, count, hits, name], ...], hit: 'test +', gathered: 'the 5 positives',
+            notes: ['TeX html', ...], w: 600, h: 200 } */
+function drawCrowd(id, spec) {
+  const el = typeof id === 'string' ? document.getElementById(id) : id;
+  el.classList.add('tree');
+  const W = spec.w || 600, H = spec.h || 200, step = 40, gap = 28, top = 66, bottom = H - 30;
+  el.style.width = W + 'px';
+  el.style.height = H + 'px';
+  const svg = svgEl('svg', { width: W, height: H }, el);
+  const acc = cssVar('--accent', el), muted = cssVar('--muted', el), rule = cssVar('--rule-soft', el);
+  const person = (x, y, letter, hit) => {
+    svgEl('circle', { cx: x, cy: y, r: 13, fill: hit ? acc : '#fff', stroke: hit ? acc : muted, 'stroke-width': 1.2 }, svg);
+    const t = svgEl('text', { x, y: y + .5, 'text-anchor': 'middle', 'dominant-baseline': 'central',
+      'font-family': cssVar('--mono', el), 'font-size': 11, 'font-weight': 700, fill: hit ? '#fff' : muted }, svg);
+    t.textContent = letter;
+  };
+  const total = spec.groups.reduce((s, g) => s + g[1], 0);
+  let x = (W - (total - 1) * step - (spec.groups.length - 1) * gap) / 2;
+  const hits = [];
+  spec.groups.forEach(([letter, n, h, name]) => {
+    const x0 = x;
+    for (let i = 0; i < n; i++, x += step) {
+      if (i < h) hits.push([x, letter]);
+      person(x, top, letter, i < h);
+    }
+    const mid = (x0 + x - step) / 2;
+    tl(el, mid, 14, `${name} &middot; ${n}`, 'note');
+    tl(el, mid, 33, `${h} of ${n} ${spec.hit || ''}`, 'tag term');
+    x += gap;
+  });
+  const g0 = W / 2 - (hits.length - 1) * step / 2;
+  hits.forEach(([hx], k) => svgEl('line', { x1: hx, y1: top + 14, x2: g0 + k * step, y2: bottom - 14, stroke: rule, 'stroke-width': 1 }, svg));
+  hits.forEach(([, letter], k) => person(g0 + k * step, bottom, letter, true));
+  if (spec.gathered) tl(el, g0 - 110, bottom, spec.gathered, 'note');
+  const notes = spec.notes || [], nx = g0 + (hits.length - 1) * step + 120;
+  notes.forEach((n, k) => tl(el, nx, bottom + (k - (notes.length - 1) / 2) * 24, n, 'ink'));
+}
+
+/* ---- layout pass, once, before typesetting ----
+   1. Page 1 (everything before the first <section>) becomes one sheet in the screen view (rule K1).
+   2. Concept labels "The intuition: <hook>" become a tag plus a serif hook; pitfall and big-idea boxes get their own style (A3, C3).
+   3. Part headers (C9): a question whose box quotes an (a)(b)(c) list gets a header before the first box of each part,
+      found from labels such as "Part (c) · Working" or "Parts (c) & (d) · Working". The header shows the part's letter,
+      its sub-question (the <li>, or its data-ask for a shorter wording) and an a-b-c tracker. A hand-written
+      <div class="part-head" data-part="c d">ask</div> is filled the same way. The label then drops its "Part (x)".
+   4. Answers at a glance (C10): adds the label, the screen cover that falls away on a tap, and the print spot that
+      scripts/glance_covers.py turns into a click-to-reveal cover in the PDF.
+   4b. Checklist (B6): each line becomes a real checkbox, remembered in this browser, plus the print spot that
+      scripts/check_boxes.py turns into a tickable PDF checkbox.
+   5. Jump links (K4): contents, cover chips, quick reference, glance labels and part trackers link to the question or part. */
+function studyLayout() {
+  const wrap = document.querySelector('.page-wrap');
+  if (wrap) {
+    const lead = [];
+    for (const el of wrap.children) { if (el.tagName === 'SECTION') break; lead.push(el); }
+    if (lead.length) {
+      const sheet = document.createElement('div');
+      sheet.className = 'sheet';
+      wrap.insertBefore(sheet, lead[0]);
+      lead.forEach(e => sheet.appendChild(e));
+    }
+  }
+
+  document.querySelectorAll('.concept-label').forEach(l => {
+    let tag = l.querySelector('.tag');
+    if (!tag) {
+      const m = l.innerHTML.match(/^\s*([^:]+?)\s*(?::\s*([\s\S]*?))?\s*$/);
+      // capitalise the hook, unless it opens with maths, markup or a one-letter symbol such as "v is a utility"
+      const hook = (m[2] || '').replace(/^(a(?=\s)|[a-z](?=[a-z]))/, c => c.toUpperCase());
+      l.innerHTML = `<span class="tag">${m[1]}</span>` + (hook ? `<span class="hook">${hook}</span>` : '');
+      tag = l.querySelector('.tag');
+    }
+    if (/pitfall/i.test(tag.textContent)) l.closest('.concept-box').classList.add('pitfall');
+    else if (/\b(big|key) idea\b/i.test(tag.textContent)) l.closest('.concept-box').classList.add('idea');
+  });
+
+  const PART = /^\s*parts?\s*\(([a-z])\)(?:\s*(?:&|and|,)\s*\(([a-z])\))?\s*(?:·\s*([\s\S]*))?$/i;
+  document.querySelectorAll('section.week').forEach(sec => {
+    const ol = sec.querySelector(':scope > .question ol');
+    if (!ol) return;
+    const items = [...ol.children].filter(e => e.tagName === 'LI');
+    const letters = items.map((_, i) => String.fromCharCode(97 + i));
+    const ask = Object.fromEntries(items.map((li, i) => [letters[i], li.dataset.ask || li.innerHTML]));
+    const keepWith = (head, ...next) => {   // the header never ends a page: it travels with what follows it
+      const k = document.createElement('div');
+      k.className = 'keep';
+      head.parentNode.insertBefore(k, head);
+      k.appendChild(head);
+      next.filter(Boolean).forEach(e => k.appendChild(e));
+    };
+    const fill = (head, parts) => {
+      const first = Math.min(...parts.map(p => letters.indexOf(p)));
+      const text = head.innerHTML.trim() || parts.map(p => ask[p] || '').join(' ');
+      head.innerHTML =
+        `<div class="part-chips">${parts.map(p => `<span class="part-chip">${p}</span>`).join('')}</div>` +
+        `<div class="part-ask">${text}</div>` +
+        `<div class="tracker">${letters.map((L, i) =>
+          `<i class="${parts.includes(L) ? 'on' : i < first ? 'done' : ''}">${L}</i>`).join('')}</div>`;
+    };
+    let current = '';
+    for (const el of [...sec.children]) {
+      if (el.classList.contains('part-head')) {
+        const parts = (el.dataset.part || '').trim().split(/\s+/);
+        fill(el, parts);
+        current = parts.join(' ');
+        const strips = [];   // a "From the table" strip (C15) travels with the header and the box after it
+        let nx = el.nextElementSibling;
+        for (; nx && nx.matches('.given.src'); nx = nx.nextElementSibling) strips.push(nx);
+        keepWith(el, ...strips, nx);
+        continue;
+      }
+      if (!el.classList.contains('formula-box')) continue;
+      const label = el.querySelector(':scope > .formula-label');
+      const m = label && label.textContent.match(PART);
+      if (!m) continue;
+      const parts = [m[1], m[2]].filter(Boolean).map(p => p.toLowerCase());
+      const rest = (m[3] || '').trim();
+      // "Part (c) · Answer" or a bare "Part (c)" on a bold box reads "Answer (c)"; a bare one elsewhere reads "Working"
+      const imp = el.classList.contains('important');
+      label.textContent = imp && (!rest || /^answer$/i.test(rest)) ? `Answer (${parts.join(', ')})` : rest || 'Working';
+      if (parts.join(' ') === current) continue;
+      current = parts.join(' ');
+      // a "Try it" line written just before the part's first box goes under the header, not above it
+      const tries = [];
+      for (let p = el.previousElementSibling; p && p.matches('.try, .given.src'); p = p.previousElementSibling) tries.unshift(p);
+      const head = document.createElement('div');
+      head.className = 'part-head';
+      el.parentNode.insertBefore(head, tries[0] || el);
+      fill(head, parts);
+      keepWith(head, ...tries, el);
+    }
+    // Question button (K5, screen only): each part header opens the question, its figure and its Given strip in a
+    // popover, copied on first open (after MathJax has typeset them), so the reader never scrolls back
+    const quoted = [];
+    for (let q = sec.querySelector(':scope > .question'); q && q.matches('.question, .figure, .given:not(.src)'); q = q.nextElementSibling) quoted.push(q);
+    if (!('popover' in HTMLElement.prototype)) return;
+    const pop = document.createElement('div');
+    pop.className = 'q-pop';
+    pop.setAttribute('popover', '');
+    sec.appendChild(pop);
+    sec.querySelectorAll('.part-head .tracker').forEach(t => {
+      const b = Object.assign(document.createElement('button'), { type: 'button', className: 'q-peek', textContent: 'Question' });
+      b.addEventListener('click', () => {
+        if (!pop.firstChild) quoted.forEach(q => pop.appendChild(q.cloneNode(true)));
+        pop.showPopover();
+      });
+      t.appendChild(b);
+    });
+  });
+
+  // a Try line or From-the-table strip that no part header carries (a question without parts, a Try line in the
+  // middle of a part) never ends a page either: it travels with the block after it (rules C12, H2).
+  // Only for documents marked <html data-layout="2">, as the skeleton is: on the 27 books delivered before
+  // 2026-11-13 it would move page breaks (two of them gained a page), and a delivered book keeps its pages.
+  if (document.documentElement.dataset.layout >= 2) document.querySelectorAll('section.week > .try, section.week > .given.src').forEach(t => {
+    if (!t.parentNode.matches('section.week')) return;          // already moved along with an earlier line
+    const lines = [t];
+    let next = t.nextElementSibling;
+    for (; next && next.matches('.try, .given.src'); next = next.nextElementSibling) lines.push(next);
+    if (!next) return;
+    if (next.matches('.keep')) return next.prepend(...lines);
+    const k = document.createElement('div');
+    k.className = 'keep';
+    t.parentNode.insertBefore(k, t);
+    k.append(...lines, next);
+  });
+
+  // a header inside the module page (TOOLKIT) never ends a page: it travels with the box after it (rule H2)
+  document.querySelectorAll('section.module > .week-header').forEach(h => {
+    const next = h.nextElementSibling;
+    if (!next) return;
+    const k = document.createElement('div');
+    k.className = 'keep';
+    h.parentNode.insertBefore(k, h);
+    k.append(h, next);
+  });
+
+  document.querySelectorAll('.formula-box.important').forEach(b => {
+    const l = b.querySelector(':scope > .formula-label');
+    if (l && /\banswers?\b/i.test(l.textContent)) b.classList.add('answer');
+  });
+
+  document.querySelectorAll('div.glance:not(.swatch)').forEach((g, n) => {
+    const grid = document.createElement('div');
+    grid.className = 'glance-grid';
+    while (g.firstChild) grid.appendChild(g.firstChild);
+    const twist = g.classList.contains('twist');   // a "What if" twist (C16): data-note holds its question
+    g.innerHTML = '<div class="glance-label">' + (twist ? 'What if' : 'Answers at a glance') + '<span>' +
+      (g.dataset.note || 'Tried it already? Check here, then read the part you missed.') + '</span></div>';
+    g.appendChild(grid);
+    const cover = document.createElement('button');
+    cover.type = 'button';
+    cover.className = 'glance-cover';
+    cover.innerHTML = twist ? '<b>ANSWER HIDDEN</b><i>Predict it first, then click here to check.</i>'
+      : '<b>ANSWERS HIDDEN</b><i>Try the question first, then click here to check.</i>';
+    cover.addEventListener('click', () => {
+      cover.classList.add('fall');
+      cover.addEventListener('animationend', () => cover.remove(), { once: true });
+    });
+    grid.appendChild(cover);
+    const spot = document.createElement('a');
+    spot.className = 'glance-spot';
+    spot.href = 'https://glance.invalid/' + (n + 1) + '?c=' + cssVar('--accent', g).replace('#', '') + (twist ? '&t=1' : '');
+    grid.appendChild(spot);
+  });
+
+  document.querySelectorAll('.check li').forEach((li, n) => {
+    const key = 'check:' + location.pathname + ':' + n;
+    const label = document.createElement('label');
+    const box = document.createElement('input');
+    box.type = 'checkbox';
+    try { box.checked = localStorage.getItem(key) === '1'; } catch (e) {}
+    box.addEventListener('change', () => {
+      try { box.checked ? localStorage.setItem(key, '1') : localStorage.removeItem(key); } catch (e) {}
+    });
+    label.append(box, ...li.childNodes);
+    const spot = document.createElement('a');
+    spot.className = 'check-spot';
+    spot.href = 'https://check.invalid/' + (n + 1);
+    li.append(label, spot);
+  });
+
+  // 5. Jump links (K4): ids on each question (q2-1) and part header chip (q2-1-a); the cover chips, contents tiles,
+  //    quick-reference "See" column, glance labels and part trackers link to them. Chrome keeps the links in the PDF,
+  //    and build.js hands window.studyOutline ([level, title, id] rows) to scripts/outline.py for the bookmarks.
+  const QN = /(\d+)\.(\d+)(?:\s*\(([a-z])\))?/;
+  const plain = t => t.replace(/\\\$/g, '\0').replace(/\$/g, '').replace(/\\bar\s*\{?([A-Za-z])\}?/g, '$1̄')
+    .replace(/\\t?frac\s*\{?(\w+)\}?\s*\{?(\w+)\}?/g, '$1/$2').replace(/\^\{?2\}?/g, '²')
+    .replace(/\\[a-z]+\s*/gi, '').replace(/[{}]/g, '').replace(/\0/g, '$').replace(/\s+/g, ' ').trim();
+  const short = t => t.length > 60 ? t.slice(0, 57).replace(/\s+\S*$/, '') + '…' : t;
+  const ids = new Set();
+  const to = (q, p) => { const id = p ? `${q}-${p}` : q; return ids.has(id) ? id : null; };
+  const link = (el, id) => {   // wrap the element's contents, so its own styling stays
+    if (!id) return;
+    const a = Object.assign(document.createElement('a'), { className: 'jump', href: '#' + id });
+    a.append(...el.childNodes);
+    el.appendChild(a);
+  };
+  const qOf = t => { const m = t.match(QN); return m ? [`q${m[1]}-${m[2]}`, m[3]] : []; };
+  window.studyOutline = [];
+  document.querySelectorAll('section.week').forEach(sec => {
+    const h = sec.querySelector(':scope > .week-header');
+    const m = h && h.querySelector('.week-number').textContent.match(QN);
+    if (!m) return;
+    const q = sec.id = `q${m[1]}-${m[2]}`;
+    ids.add(q);
+    studyOutline.push([1, plain(`Q${m[1]}.${m[2]} ${h.querySelector('.week-title').textContent}`), q]);
+    sec.querySelectorAll('.part-head .part-chip').forEach(c => {
+      const L = c.textContent.trim(), ask = c.closest('.part-head').querySelector('.part-ask');
+      ids.add(c.id = `${q}-${L}`);
+      studyOutline.push([2, `(${L}) ` + short(plain(ask ? ask.textContent : '')), c.id]);   // the contents line may rename it
+    });
+    sec.querySelectorAll('.part-head .tracker i').forEach(i => {
+      const id = to(q, i.textContent.trim());
+      if (!id) return;
+      const a = Object.assign(document.createElement('a'), { className: 'jump', href: '#' + id });
+      i.replaceWith(a);
+      a.appendChild(i);
+    });
+    sec.querySelectorAll('.glance-grid > div > b:first-child').forEach(b => {
+      const p = b.textContent.trim().match(/^\(([a-z])\)$/);
+      if (p) link(b, to(q, p[1]));
+    });
+  });
+  document.querySelectorAll('.cover .mods span').forEach(s => link(s, to(qOf(s.textContent)[0])));
+  document.querySelectorAll('table.plan td.ref, .check .ref').forEach(td => {   // .check .ref: checklist pointers (B6)
+    const [q, p] = qOf(td.textContent);
+    if (q) link(td, to(q, p) || to(q));
+  });
+  document.querySelectorAll('.toc-col').forEach(col => {
+    const [q] = qOf(col.querySelector('.code').textContent);
+    if (!q) return;
+    col.querySelectorAll('.code, .name').forEach(e => link(e, to(q)));
+    col.querySelectorAll('li').forEach(li => {
+      const p = li.textContent.match(/^\s*\(([a-z])\)/);
+      link(li, (p && to(q, p[1])) || to(q));
+      // each part's bookmark takes the line's wording: "(a) Create (b) Append" names a and b, "(b) (c) Two decks" and
+      // "(a)–(c) Read the line" give every part they cover the same words
+      const bits = plain(li.textContent).split(/\(([a-z])\)/);
+      if (bits.length < 3 || bits[0].trim()) return;
+      let wait = [];
+      for (let i = 1; i < bits.length; i += 2) {
+        const seg = bits[i + 1].trim();
+        if (/^(–|-|to)$/.test(seg) && bits[i + 2]) {
+          for (let c = bits[i].charCodeAt(0); c < bits[i + 2].charCodeAt(0); c++) wait.push(String.fromCharCode(c));
+          continue;
+        }
+        wait.push(bits[i]);
+        const words = seg.replace(/^(?:[,&]|and\b)\s*/, '').replace(/[\s,;&]+$/, '');
+        if (!words) continue;
+        wait.forEach(L => { const row = studyOutline.find(x => x[2] === `${q}-${L}`); if (row) row[1] = `(${L}) ${words}`; });
+        wait = [];
+      }
+    });
+  });
+}
+
+/* ---- typeset, glue punctuation (and an opening bracket) to inline maths, then signal the PDF builder ---- */
+function studyReady() {
+  if (!studyReady.laidOut) { studyReady.laidOut = true; studyLayout(); }
+  if (!window.MathJax || !MathJax.startup || !MathJax.startup.promise) return setTimeout(studyReady, 50);
+  const glue = () => document.querySelectorAll('mjx-container:not([display="true"])').forEach(m => {
+    const next = m.nextSibling, prev = m.previousSibling;
+    const after = next && next.nodeType === 3 && /^[,.;:)!?]/.test(next.data);
+    const before = prev && prev.nodeType === 3 && /\($/.test(prev.data);
+    if (!after && !before) return;
+    const span = document.createElement('span');
+    span.style.whiteSpace = 'nowrap';
+    m.parentNode.insertBefore(span, m);
+    if (before) { prev.data = prev.data.slice(0, -1); span.append('('); }
+    span.append(m);
+    if (after) { span.append(next.data[0]); next.data = next.data.slice(1); }
+  });
+  MathJax.startup.promise
+    .then(() => MathJax.typesetPromise())
+    .then(glue)
+    .then(() => Promise.all([document.fonts.ready, window.brandReady]))
+    .then(() => document.body.classList.add('math-ready'));
+}
+document.addEventListener('DOMContentLoaded', studyReady);
+</script>
+<script>
+/* Brand layer: the author's ribbon on every printed page, and the end page.
+   Self-contained. build.js inlines it into every document; to reuse it elsewhere, include this one file in any
+   HTML page printed with Chrome 131+ (it needs page-margin boxes).
+   - Print: a full-width ribbon along the bottom edge of every page (built from the bottom page-margin boxes), with the author line
+     on the left and the Instagram and email marks on the right (page-margin boxes). It sits below the content
+     area, so it never covers anything, and its text stays selectable. Margin boxes print as plain text, so
+     scripts/brand_links.py adds the Instagram and email links to the PDF after printing (build.js runs it).
+     Two styles: navy (default) or cream, chosen with <html data-ribbon="cream">.
+   - Screen: a small fixed badge in the corner of the standalone HTML.
+   - End page: fills every <section class="brand-end" data-guide="..." data-topic="..." data-more="..."></section>.
+     Each theme styles the .be-* classes; the words and contact details live here only.
+     Default is the free edition (free to share, exam-pack sign-up); data-edition="paid" gives the personal-use page.
+   Change BRAND to update every guide at the next build.
+   Links: every link goes through BRAND_GO (/go/<book>/<where> on the author's site), whose 404.html counts the tap
+   with Cloudflare and forwards to the real address. The real addresses live in that page (D:/School/Other/Tools/drive/site). */
+
+const BRAND = {
+  name: 'Michael Zefi',
+  email: 'michaelzefi@gmail.com',
+  instagram: 'michaelzefi',
+  year: 2026,
+  slogan: 'Liked this guide? I make one for every topic.',
+  signup: 'https://forms.gle/qKyWaWmpUF7k1oc68',   // exam-pack sign-up form link (Google Form). Empty: the end page asks for an Instagram DM instead
+};
+const BRAND_QR = '<svg viewBox="0 0 29 29"><path stroke="#0e1b33" d="M0 0.5h7m3 0h1m1 0h1m2 0h1m2 0h2m2 0h7m-29 1h1m5 0h1m2 0h2m1 0h2m1 0h1m2 0h1m3 0h1m5 0h1m-29 1h1m1 0h3m1 0h1m2 0h2m5 0h2m1 0h2m1 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m2 0h1m2 0h2m1 0h2m1 0h1m3 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m6 0h6m1 0h1m1 0h1m1 0h3m1 0h1m-29 1h1m5 0h1m1 0h4m1 0h4m2 0h1m2 0h1m5 0h1m-29 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-17 1h1m4 0h2m1 0h1m-21 1h1m2 0h1m1 0h2m1 0h1m2 0h2m2 0h2m3 0h2m1 0h1m-23 1h1m1 0h3m2 0h1m1 0h1m6 0h2m2 0h2m2 0h1m2 0h1m-26 1h2m1 0h1m1 0h3m5 0h1m2 0h2m3 0h4m-28 1h3m4 0h1m1 0h3m2 0h1m1 0h1m7 0h1m1 0h2m-28 1h1m1 0h2m2 0h3m1 0h1m4 0h3m3 0h2m2 0h1m1 0h2m-28 1h2m1 0h1m2 0h2m2 0h1m7 0h1m1 0h1m-22 1h2m2 0h7m1 0h1m4 0h2m1 0h3m2 0h4m-29 1h2m6 0h1m2 0h1m1 0h2m1 0h2m2 0h1m2 0h1m1 0h1m1 0h1m-28 1h1m2 0h1m2 0h1m1 0h3m1 0h3m2 0h1m1 0h1m1 0h1m5 0h1m-24 1h2m2 0h3m5 0h1m1 0h1m1 0h4m1 0h1m2 0h1m-29 1h1m1 0h3m1 0h1m5 0h2m7 0h1m1 0h2m2 0h2m-27 1h2m3 0h5m1 0h1m3 0h2m2 0h4m2 0h2m-29 1h1m2 0h1m2 0h1m1 0h2m4 0h3m2 0h6m1 0h1m-19 1h3m1 0h2m3 0h1m2 0h1m3 0h1m1 0h3m-29 1h7m2 0h3m1 0h2m1 0h3m1 0h1m1 0h1m1 0h1m2 0h1m-28 1h1m5 0h1m1 0h1m2 0h1m1 0h1m2 0h1m2 0h2m3 0h3m-27 1h1m1 0h3m1 0h1m2 0h2m1 0h1m1 0h5m1 0h5m2 0h2m-29 1h1m1 0h3m1 0h1m1 0h1m5 0h1m7 0h6m-28 1h1m1 0h3m1 0h1m2 0h2m1 0h1m1 0h1m6 0h1m2 0h3m1 0h1m-29 1h1m5 0h1m2 0h2m4 0h1m1 0h1m2 0h3m4 0h1m-28 1h7m1 0h1m2 0h1m2 0h2m1 0h1m1 0h2m1 0h2m1 0h1m1 0h1"/></svg>';   // inline <svg> QR code of BRAND_GO + 'qr' (forwards to BRAND.signup), made with segno; shown beside the link when set
+
+// counted links: the site forwards instagram to the profile, email to Gmail's compose window, signup to BRAND.signup.
+// <book> is the file name (ECN214_Topic6_Solutions.html -> ecn214-topic6), so the counts say which book was tapped.
+const BRAND_GO = 'https://michaelz09765.github.io/go/';
+const BRAND_BOOK = decodeURIComponent(location.pathname.split('/').pop()).replace(/(_Solutions)?\.html?$/i, '')
+  .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'guide';
+const BRAND_LINK = {
+  ig: `${BRAND_GO}${BRAND_BOOK}/instagram`,
+  mail: `${BRAND_GO}${BRAND_BOOK}/email`,
+  signup: `${BRAND_GO}${BRAND_BOOK}/signup`,
+};
+
+const BRAND_ICON = {
+  ig: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><radialGradient id="be-ig" cx="0.3" cy="1.07" r="1.25">' +
+      '<stop offset="0" stop-color="#fdf497"/><stop offset="0.05" stop-color="#fdf497"/><stop offset="0.45" stop-color="#fd5949"/>' +
+      '<stop offset="0.6" stop-color="#d6249f"/><stop offset="0.9" stop-color="#285aeb"/></radialGradient></defs>' +
+      '<rect width="24" height="24" rx="6.5" fill="url(#be-ig)"/>' +
+      '<rect x="5.2" y="5.2" width="13.6" height="13.6" rx="4" fill="none" stroke="#fff" stroke-width="1.8"/>' +
+      '<circle cx="12" cy="12" r="3.2" fill="none" stroke="#fff" stroke-width="1.8"/><circle cx="16.1" cy="7.9" r="1.05" fill="#fff"/></svg>',
+  mail: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="24" height="24" rx="6.5" fill="#fff"/>' +
+      '<g transform="translate(3.5 5.6) scale(0.1932) translate(-52 -42)">' +   // the Gmail M (88 x 66) centred in the tile
+      '<path fill="#4285f4" d="M58 108h14V74L52 59v43c0 3.32 2.69 6 6 6"/>' +
+      '<path fill="#34a853" d="M120 108h14c3.32 0 6-2.69 6-6V59l-20 15"/>' +
+      '<path fill="#fbbc04" d="M120 48v26l20-15v-8c0-7.42-8.47-11.65-14.4-7.2"/>' +
+      '<path fill="#ea4335" d="M72 74V48l24 18 24-18v26L96 92"/>' +
+      '<path fill="#c5221f" d="M52 51v8l20 15V48l-5.6-4.2c-5.94-4.45-14.4-.22-14.4 7.2"/></g></svg>',
+};
+
+const BRAND_RIBBON = {   // band colour, author line, contacts, optional hairline on top of the band
+  navy:  { band: '#0e1b33', text: '#d9d2c2', accent: '#f2c46a', rule: null },
+  cream: { band: '#f2ead9', text: '#5a5244', accent: '#0e1b33', rule: '#0e1b33' },
+};
+
+(function brandLayer() {
+  const { ig, mail } = BRAND_LINK;
+
+  // Fraunces, the series' serif, for the ribbon, whatever fonts the theme uses
+  const font = document.createElement('link');
+  font.rel = 'stylesheet';
+  font.href = 'https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..600&display=swap';
+  document.head.appendChild(font);
+
+  // Ribbon geometry. Chrome paints no images in the page background, so the band is built from the five bottom
+  // margin boxes, each pushed down to the last 8 mm of the 0.55 in bottom margin and filled with the band colour.
+  const BAND = 8, MARGIN = 13.97, ICON = 13, SIZE = 11.33;   // mm, mm (0.55 in), px, px (8.5 pt)
+  // one size on both sides keeps the author line and the contacts on one baseline
+  const SERIF = "Fraunces, Georgia, 'Times New Roman', serif";
+  const LINE = `italic 400 ${SIZE}px ${SERIF}`, CONTACT = `600 ${SIZE}px ${SERIF}`;
+
+  const ribbonCSS = () => {
+    const r = BRAND_RIBBON[document.documentElement.dataset.ribbon] || BRAND_RIBBON.navy;
+    // icons are background images placed in em-space slots, measured in the DOM so Fraunces' optical size counts
+    const probe = document.createElement('span');
+    probe.style.cssText = `position: absolute; visibility: hidden; white-space: pre; font: ${CONTACT};`;
+    document.documentElement.appendChild(probe);
+    const w = t => { probe.textContent = t; return probe.getBoundingClientRect().width; };
+    const E = ' ', T = ' ', SLOT = E + T, GAP = E + E;
+    const H = '@' + BRAND.instagram, M = BRAND.email;
+    const contacts = SLOT + T + H + GAP + SLOT + T + M;
+    const centre = (w(SLOT) - ICON) / 2;
+    const rMail = w(T + M) + centre, rIg = w(T + H + GAP + SLOT + T + M) + centre;
+    probe.remove();
+    // both icons in ONE image: Chrome's printer crashes on a margin box with two background images
+    const dx = rIg - rMail, place = (svg, x) => svg.replace('<svg ', `<svg x="${x}" width="${ICON}" height="${ICON}" `);
+    const pair = `<svg xmlns="http://www.w3.org/2000/svg" width="${dx + ICON}" height="${ICON}">` +
+      place(BRAND_ICON.ig, 0) + place(BRAND_ICON.mail, dx) + '</svg>';
+    const pairURI = `url("data:image/svg+xml,${encodeURIComponent(pair)}")`;
+    // every box: the band colour in the last BAND mm; small negative side margins overlap the boxes so PDF
+    // viewers show no hairline seams between them
+    const box = `margin: ${(MARGIN - BAND).toFixed(2)}mm -0.6px 0; background-color: ${r.band};` +
+      (r.rule ? ` border-top: 0.3mm solid ${r.rule};` : '') + ` vertical-align: middle; line-height: ${ICON}px;`;
+    return `
+@page {
+  @bottom-left-corner { content: ""; ${box} }
+  @bottom-left {
+    content: ${JSON.stringify(`Made by ${BRAND.name} · ${BRAND.slogan}`)};
+    font: ${LINE}; color: ${r.text}; ${box} padding-left: 3px;
+  }
+  @bottom-center { content: ""; ${box} }
+  @bottom-right {
+    content: ${JSON.stringify(contacts)};
+    font: ${CONTACT}; color: ${r.accent}; ${box} padding-right: 3px;
+    background-image: ${pairURI}; background-repeat: no-repeat;
+    background-size: ${(dx + ICON).toFixed(2)}px ${ICON}px;
+    background-position: right ${(rMail + 3).toFixed(2)}px center;
+  }
+  @bottom-right-corner { content: ""; ${box} }
+}
+@page brand-end {
+  @bottom-left-corner { content: none; } @bottom-left { content: none; } @bottom-center { content: none; }
+  @bottom-right { content: none; } @bottom-right-corner { content: none; }
+}`;
+  };
+
+  const base = document.createElement('style');
+  base.textContent = `
+@page brand-end { margin: 0; }
+.brand-end { page: brand-end; break-before: page; height: 297mm; box-sizing: border-box; overflow: hidden; }
+.brand-mark { display: none; }
+@media screen {
+  .brand-mark { display: flex; align-items: center; gap: 6px; position: fixed; right: 14px; bottom: 12px; z-index: 50;
+    font: 600 12px ${SERIF}; color: #f2c46a; background: #0e1b33;
+    border-radius: 999px; padding: 5px 12px 5px 6px; box-shadow: 0 3px 10px rgba(14, 27, 51, .25); }
+  .brand-mark a { color: inherit; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
+  .brand-mark a + a { margin-left: 10px; }
+  .brand-mark svg { width: 16px; height: 16px; }
+  .brand-end { height: auto; min-height: 297mm; }
+}`;
+  document.head.appendChild(base);
+
+  // resolves once Fraunces is loaded and the ribbon (which needs its widths) is in place
+  window.brandReady = new Promise(res => { font.onload = font.onerror = res; })
+    .then(() => Promise.all([document.fonts.load(LINE), document.fonts.load(CONTACT)]))
+    .catch(() => {})
+    .then(() => {
+      const css = document.createElement('style');
+      css.id = 'brand-ribbon';
+      css.textContent = ribbonCSS();
+      document.head.appendChild(css);
+    });
+
+  const cards = `
+  <div class="be-cards">
+    <a class="be-card" href="${ig}" target="_blank">${BRAND_ICON.ig}<span><small>Instagram</small><b>@${BRAND.instagram}</b><i>Send me a DM</i></span></a>
+    <a class="be-card" href="${mail}" target="_blank">${BRAND_ICON.mail}<span><small>Email</small><b>${BRAND.email}</b><i>Requests, questions, feedback</i></span></a>
+  </div>`;
+
+  // Default: the weekly Solutions Books are free and sell the exam pack. data-edition="paid" keeps the old page.
+  const freePage = el => {
+    const d = el.dataset;
+    const code = ((d.more || '').match(/\b[A-Z]{3} ?\d{3}\b/) || ['the module'])[0];
+    const cta = BRAND.signup
+      ? `<p class="be-cta">Sign up and you get it first. It takes 20 seconds.</p>
+      <a class="be-link" href="${BRAND_LINK.signup}" target="_blank">${BRAND.signup.replace(/^https?:\/\//, '')}</a>`
+      : `<p class="be-cta">DM me &ldquo;EXAM&rdquo; on Instagram and you get it first.</p>
+      <a class="be-link" href="${ig}" target="_blank">instagram.com/${BRAND.instagram}</a>`;
+    el.innerHTML = `
+<div class="be-inner">
+  <div class="be-kicker">Free edition &middot; yours to keep and share</div>
+  <h2 class="be-title">Built by a student,<br><em>for students.</em></h2>
+  <p class="be-lead">This ${d.guide || 'guide'} is free, and I write one for every week of ${code}.
+    If it helped you, send it to a friend on the module.</p>
+  <div class="be-exam">
+    <div>
+      <small>Coming before exam season</small>
+      <h3>The full ${code} exam pack</h3>
+      <ul>
+        <li><b>Master guide:</b> the whole module in one book</li>
+        <li><b>Flashcards</b> for every topic</li>
+        <li><b>Mock exams</b> with worked answers</li>
+        <li><b>1-on-1 sessions</b> on the topics you're stuck on</li>
+      </ul>
+      ${cta}
+    </div>
+    ${BRAND.signup && BRAND_QR ? `<div class="be-qr">${BRAND_QR}<i>Scan to sign up</i></div>` : ''}
+  </div>${cards}
+  <p class="be-legal">&copy; ${BRAND.year} ${BRAND.name}. Free to share for study. Please don't resell it.</p>
+</div>`;
+  };
+
+  const paidPage = el => {
+    const d = el.dataset;
+    el.innerHTML = `
+<div class="be-inner">
+  <div class="be-kicker">Thank you for studying with this guide</div>
+  <h2 class="be-title">Built by a student,<br><em>for students.</em></h2>
+  <p class="be-lead">This ${d.guide || 'guide'} was created by <b>${BRAND.name}</b>. If it helped you with ${d.topic || 'this topic'},
+    reach out. I make guides like this for ${d.more || 'every topic of the module'}, and I take requests.</p>${cards}
+  <ul class="be-asks">
+    <li><b>The next topic</b> in the same style</li>
+    <li><b>Your other modules</b> on request</li>
+    <li><b>Any question</b> about this guide</li>
+  </ul>
+  <p class="be-legal">&copy; ${BRAND.year} ${BRAND.name}. For your personal study only. Please do not share, upload or resell this guide.</p>
+</div>`;
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.brand-end').forEach(el => (el.dataset.edition === 'paid' ? paidPage : freePage)(el));
+    const m = document.createElement('div');
+    m.className = 'brand-mark';
+    m.innerHTML = `<a href="${ig}" target="_blank">${BRAND_ICON.ig}@${BRAND.instagram}</a><a href="${mail}" target="_blank">${BRAND_ICON.mail}${BRAND.email}</a>`;
+    document.body.appendChild(m);
+  });
+})();
+</script>
+</head>
+<body>
+<div class="page-wrap">
+
+<div class="cover">
+  <div class="kicker">ECN240 &middot; Financial Statements and Analysis</div>
+  <h1>Mock Midterm 1<br><em>The Paper</em></h1>
+  <p class="sub">Lectures 1&ndash;6 &middot; 19 questions &middot; 60 minutes &middot; 100 marks</p>
+</div>
+
+<div class="panel">
+  <div class="duo">
+  <table class="plan bs" style="font-size:.84rem; line-height:1.3">
+    <thead><tr><th>Q</th><th class="txt">Topic</th><th>Marks</th><th>Yours</th></tr></thead>
+    <tbody><tr><td>1.1</td><td class="txt">Revenue, expenses and profit</td><td>5</td><td class="hl"></td></tr><tr><td>1.2</td><td class="txt">Classifying non-current assets</td><td>5</td><td class="hl"></td></tr><tr><td>1.3</td><td class="txt">Reducing balance: one year&rsquo;s charge</td><td>5</td><td class="hl"></td></tr><tr><td>1.4</td><td class="txt">Credit sales: the customer pays</td><td>5</td><td class="hl"></td></tr><tr><td>1.5</td><td class="txt">Accruals: cash against expense</td><td>5</td><td class="hl"></td></tr><tr><td>1.6</td><td class="txt">Choices within accounting standards</td><td>5</td><td class="hl"></td></tr><tr><td>1.7</td><td class="txt">Disposals at a loss</td><td>5</td><td class="hl"></td></tr><tr><td>1.8</td><td class="txt">Balancing the cash account</td><td>5</td><td class="hl"></td></tr><tr><td>1.9</td><td class="txt">Reducing balance: how it behaves</td><td>5</td><td class="hl"></td></tr><tr><td>1.10</td><td class="txt">Going concern fails</td><td>5</td><td class="hl"></td></tr></tbody>
+  </table>
+  <table class="plan bs" style="font-size:.84rem; line-height:1.3">
+    <thead><tr><th>Q</th><th class="txt">Topic</th><th>Marks</th><th>Yours</th></tr></thead>
+    <tbody><tr><td>1.11</td><td class="txt">Prepayments</td><td>5</td><td class="hl"></td></tr><tr><td>1.12</td><td class="txt">What a T account shows</td><td>5</td><td class="hl"></td></tr><tr><td>1.13</td><td class="txt">Credit purchases</td><td>5</td><td class="hl"></td></tr><tr><td>1.14</td><td class="txt">Profit from a trial balance</td><td>10</td><td class="hl"></td></tr><tr><td>1.15</td><td class="txt">Measuring PPE under IAS 16</td><td>5</td><td class="hl"></td></tr><tr><td>1.16</td><td class="txt">Reducing balance: accumulated depreciation</td><td>5</td><td class="hl"></td></tr><tr><td>1.17</td><td class="txt">Revenue and gains</td><td>5</td><td class="hl"></td></tr><tr><td>1.18</td><td class="txt">Disposal after the year&rsquo;s charge</td><td>5</td><td class="hl"></td></tr><tr><td>1.19</td><td class="txt">Sales returns on credit</td><td>5</td><td class="hl"></td></tr><tr class="tot"><td>Total</td><td class="txt"></td><td>100</td><td class="hl"></td></tr></tbody>
+  </table>
+  </div>
+</div>
+<div class="formula-note" style="margin-top:1rem">Same format as the real test of 18 November 2026: nineteen multiple-choice questions with four options each, 5 marks a question and 10 for the trial balance (Q1.14), 60 minutes, Lectures 1&ndash;6. Sit it in one hour without notes (a calculator is fine), then tick your answers on screen, press Submit, and follow the link to the worked solutions.</div>
+
+<section class="week">
+  <div class="week-header">
+    <span class="week-number">PAPER</span>
+    <span class="week-title">Mock Midterm Test 1</span>
+    <span class="week-topic">60 minutes &middot; 100 marks</span>
+  </div>
+
+  <div class="given tex"><b>Rules</b>
+    <span>60 minutes</span><span>answer all 19</span><span>one option each</span><span>5 marks each, Q1.14 10</span><span>a wrong answer scores 0</span>
+  </div>
+
+  <div class="question tex">
+    <div class="q-label">QUESTION 1.1 &middot; 5 MARKS</div>
+    <p>GHI had revenue of 120,000 and a loss of 15,000 in 2026. Its total expenses were:</p>
+    <ol><li>105,000</li><li>15,000</li><li>135,000</li><li>120,000</li></ol>
+  </div>
+  <div class="question tex">
+    <div class="q-label">QUESTION 1.2 &middot; 5 MARKS</div>
+    <p>Under IAS accounting, a trademark bought from another company is classified as:</p>
+    <ol><li>PPE</li><li>Other non-current assets</li><li>Current assets</li><li>Intangible assets</li></ol>
+  </div>
+  <div class="question tex">
+    <div class="q-label">QUESTION 1.3 &middot; 5 MARKS</div>
+    <p>Company JKL bought a van for 50,000 on 1 January 2024. It depreciates the van using the reducing balance method at 30% a year; its year ends on 31 December. The depreciation charge for 2026 is:</p>
+    <ol><li>15,000</li><li>7,350</li><li>17,150</li><li>10,500</li></ol>
+  </div>
+  <div class="question tex">
+    <div class="q-label">QUESTION 1.4 &middot; 5 MARKS</div>
+    <p>A credit customer pays in cash the 1,200 they owe for goods bought last month. The double entry is:</p>
+    <ol><li>Debit Cash, credit Trade receivables</li><li>Debit Trade receivables, credit Cash</li><li>Debit Cash, credit Sales</li><li>Debit Sales, credit Trade receivables</li></ol>
+  </div>
+  <div class="question tex">
+    <div class="q-label">QUESTION 1.5 &middot; 5 MARKS</div>
+    <p>Company DEF&rsquo;s rent expense for 2026 is 6,500. Accrued rent was 500 at the end of 2025 and 700 at the end of 2026. How much rent did DEF pay in cash in 2026?</p>
+    <ol><li>6,300</li><li>6,700</li><li>7,700</li><li>5,300</li></ol>
+  </div>
+  <div class="question tex">
+    <div class="q-label">QUESTION 1.6 &middot; 5 MARKS</div>
+    <p>Two companies buy identical machines on the same day, and both prepare their accounts under IFRS. Which statement is correct?</p>
+    <ol><li>They must report the same depreciation charge: IFRS sets one rule for each transaction</li><li>They may report different depreciation charges, because IFRS lets each company choose its method</li><li>They must both use straight-line depreciation, the only method IFRS allows</li><li>None of the answers is correct</li></ol>
+  </div>
+  <div class="question tex">
+    <div class="q-label">QUESTION 1.7 &middot; 5 MARKS</div>
+    <p>Company MNO sells for &pound;9,000 in cash a machine that cost &pound;60,000 and has accumulated depreciation of &pound;45,000. The effect on the financial statements is:</p>
+    <ol><li>Cash increases by 9,000; PPE is reduced by 60,000; Profit decreases by 51,000</li><li>Cash increases by 9,000; PPE is reduced by 15,000; Profit increases by 9,000</li><li>Cash increases by 9,000; PPE is reduced by 9,000; no effect on profit</li><li>Cash increases by 9,000; PPE is reduced by 15,000; Profit decreases by 6,000</li></ol>
+  </div>
+  <div class="question tex">
+    <div class="q-label">QUESTION 1.8 &middot; 5 MARKS</div>
+    <p>At the start of the month the cash account of PQR Ltd has a debit balance of 500. During the month it pays rent of 1,400 in cash, receives 300 from a credit customer and buys goods on credit for 900. At the end of the month, the balance of the cash account in PQR&rsquo;s books is:</p>
+    <ol><li>600 in credit</li><li>600 in debit</li><li>1,500 in credit</li><li>Not enough information to answer</li></ol>
+  </div>
+  <div class="question tex">
+    <div class="q-label">QUESTION 1.9 &middot; 5 MARKS</div>
+    <p>Reducing balance depreciation:</p>
+    <ol><li>Applies the same percentage to the asset&rsquo;s original cost every year</li><li>Gives a smaller charge each year than the year before</li><li>Gives its largest charges at the end of the asset&rsquo;s life</li><li>All of the answers are correct</li></ol>
+  </div>
+  <div class="question tex">
+    <div class="q-label">QUESTION 1.10 &middot; 5 MARKS</div>
+    <p>If a business is no longer a going concern, its assets should be measured at:</p>
+    <ol><li>Historical cost</li><li>Historical cost minus accumulated depreciation, as usual</li><li>None of the answers is correct</li><li>Their net realisable value: what the business could get by selling them today</li></ol>
+  </div>
+  <div class="question tex">
+    <div class="q-label">QUESTION 1.11 &middot; 5 MARKS</div>
+    <p>On 1 October 2026, STU Ltd pays 3,600 for twelve months of office rent in advance. The effect on the financial statements for the year to 31 December 2026 is:</p>
+    <ol><li>A cost of 3,600 in the income statement</li><li>A cost of 900 in the income statement, an accrual of 2,700 in the balance sheet</li><li>A cost of 900 in the income statement, a prepayment of 2,700 in the balance sheet</li><li>A cost of 2,700 in the income statement, a prepayment of 900 in the balance sheet</li></ol>
+  </div>
+  <div class="question tex">
+    <div class="q-label">QUESTION 1.12 &middot; 5 MARKS</div>
+    <p>Which of the following statements about T accounts is correct?</p>
+    <ol><li>Every T account has equal debit and credit totals before a balance is carried down</li><li>T accounts are used under IFRS but not under UK or US GAAP</li><li>The balance of a T account is the difference between the totals of its debit side and its credit side</li><li>Each transaction is recorded on both sides of the same T account</li></ol>
+  </div>
+  <div class="question tex">
+    <div class="q-label">QUESTION 1.13 &middot; 5 MARKS</div>
+    <p>When a company buys goods for resale on credit, the account credited is:</p>
+    <ol><li>Purchases</li><li>Trade receivables</li><li>Cash</li><li>Trade payables</li></ol>
+  </div>
+  <div class="question tex">
+    <div class="q-label">QUESTION 1.14 &middot; 10 MARKS</div>
+    <p>Consider the following adjusted trial balance of VWX Ltd for the year to 31 December 2026:</p><div class="duo"><table class="plan bs" style="font-size:.8rem; line-height:1.25"><thead><tr><th class="txt">Account</th><th>Debit</th><th>Credit</th></tr></thead><tbody><tr><td class="txt">Share capital</td><td></td><td>30,000</td></tr><tr><td class="txt">Cash</td><td>15,500</td><td></td></tr><tr><td class="txt">Trade receivables</td><td>11,000</td><td></td></tr><tr><td class="txt">Trade payables</td><td></td><td>8,600</td></tr><tr><td class="txt">Equipment at cost</td><td>48,000</td><td></td></tr><tr><td class="txt">Accumulated depreciation</td><td></td><td>21,600</td></tr><tr><td class="txt">Inventory</td><td>6,500</td><td></td></tr><tr><td class="txt">Rent prepayment</td><td>1,500</td><td></td></tr></tbody></table><table class="plan bs" style="font-size:.8rem; line-height:1.25"><thead><tr><th class="txt">Account</th><th>Debit</th><th>Credit</th></tr></thead><tbody><tr><td class="txt">Retained profits</td><td></td><td>9,000</td></tr><tr><td class="txt">Sales</td><td></td><td>80,000</td></tr><tr><td class="txt">Sales returns</td><td>3,000</td><td></td></tr><tr><td class="txt">Cost of goods sold</td><td>41,000</td><td></td></tr><tr><td class="txt">Discounts received</td><td></td><td>1,200</td></tr><tr><td class="txt">Wages</td><td>12,500</td><td></td></tr><tr><td class="txt">Rent</td><td>6,000</td><td></td></tr><tr><td class="txt">Depreciation expense</td><td>5,400</td><td></td></tr></tbody></table></div><p>The profit or loss for the year is:</p>
+    <ol><li>10,900</li><li>16,300</li><li>13,300</li><li>11,800</li></ol>
+  </div>
+  <div class="question tex">
+    <div class="q-label">QUESTION 1.15 &middot; 5 MARKS</div>
+    <p>Under IAS accounting, which statement about property, plant and equipment (PPE) is correct?</p>
+    <ol><li>Land is always depreciated over its useful life</li><li>PPE can be carried at cost or at a revalued amount, at the company&rsquo;s choice</li><li>Revalued assets are no longer depreciated</li><li>All of the answers are correct</li></ol>
+  </div>
+  <div class="question tex">
+    <div class="q-label">QUESTION 1.16 &middot; 5 MARKS</div>
+    <p>At the start of 2026, company ABC&rsquo;s equipment had a cost of 100,000 and accumulated depreciation of 36,000. ABC depreciates equipment using the reducing balance method at 25% a year. At the end of 2026, accumulated depreciation on the equipment is:</p>
+    <ol><li>52,000</li><li>16,000</li><li>61,000</li><li>48,000</li></ol>
+  </div>
+  <div class="question tex">
+    <div class="q-label">QUESTION 1.17 &middot; 5 MARKS</div>
+    <p>Under IAS accounting, revenue:</p>
+    <ol><li>Includes gains on the sale of old machinery</li><li>Is the same as the cash received from customers</li><li>Arises in the course of the ordinary activities of the company</li><li>None of the answers is correct</li></ol>
+  </div>
+  <div class="question tex">
+    <div class="q-label">QUESTION 1.18 &middot; 5 MARKS</div>
+    <p>On 1 January 2026 a van had a cost of 40,000 and accumulated depreciation of 24,000. It is depreciated by 8,000 a year on a straight-line basis. On 31 December 2026, after charging the year&rsquo;s depreciation, the company sells the van for 10,000 in cash. The result on disposal is:</p>
+    <ol><li>A loss of 6,000</li><li>A gain of 10,000</li><li>A loss of 30,000</li><li>A gain of 2,000</li></ol>
+  </div>
+  <div class="question tex">
+    <div class="q-label">QUESTION 1.19 &middot; 5 MARKS</div>
+    <p>A customer returns goods for 250 that they had bought on credit and not yet paid for. The double entry is:</p>
+    <ol><li>Debit Sales returns, credit Trade receivables</li><li>Debit Trade receivables, credit Sales returns</li><li>Debit Sales returns, credit Cash</li><li>Debit Sales, credit Cash</li></ol>
+  </div>
+</section>
+
+</div>
+
+<section class="brand-end" data-guide="mock paper" data-topic="the ECN240 midterm" data-more="every topic of ECN240 Financial Statements and Analysis"></section>
+<script>
+/* Screen-only answer sheet in the style of a QMplus quiz: each printed option becomes a clickable row with a small
+   square tick box, then Submit marks it. Everything added carries class mcq-ui (hidden in print), and every layout
+   change sits in @media screen, so the PDF stays the plain paper. */
+(function () {
+  const KEY = 'aGlnZmZnaWZnaWhoaWhnZmhpZg==';   // answer letters, each shifted +5 then base64
+  const key = Array.from(atob(KEY), c => String.fromCharCode(c.charCodeAt(0) - 5));
+  const qs = Array.from(document.querySelectorAll('.question'));
+  if (!qs.length || qs.length !== key.length) return;
+  const STORE = 'ecn240-mock1-answers', L = 'abcd';
+  const SOL = document.documentElement.dataset.solutions || '';   // set only on a published copy: links to the worked solutions
+  const load = () => { try { return JSON.parse(localStorage.getItem(STORE)) || {}; } catch (e) { return {}; } };
+  const save = a => { try { localStorage.setItem(STORE, JSON.stringify(a)); } catch (e) { /* page works without storage */ } };
+  const forget = () => { try { localStorage.removeItem(STORE); } catch (e) { /* ignore */ } };
+
+  const css = document.createElement('style');
+  css.textContent = `
+@media screen {
+  .question ol.mcq-list { list-style: none; padding-left: 0; margin-top: .5rem; }
+  .question ol.mcq-list > li { padding: 0; margin: 0 0 .15rem; }
+  .mcq-opt { display: flex; align-items: flex-start; gap: .7rem; width: 100%; box-sizing: border-box; cursor: pointer;
+    padding: .38rem .6rem; border-radius: 4px; border: 1px solid transparent; }
+  .mcq-opt:hover { background: var(--tint); }
+  .mcq-opt input { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; }
+  .mcq-sq { flex: none; width: 1.05rem; height: 1.05rem; margin-top: .22rem; border: 2px solid var(--ink-soft); border-radius: 3px;
+    background: #fff; display: inline-flex; align-items: center; justify-content: center; font: 700 .8rem var(--sans); color: #fff; }
+  .mcq-opt input:checked ~ .mcq-sq { background: var(--ink); border-color: var(--ink); }
+  .mcq-opt input:checked ~ .mcq-sq::after { content: '\\2713'; }
+  .mcq-opt:has(input:focus-visible) { outline: 3px solid var(--ochre); outline-offset: 1px; }
+  .mcq-let { flex: none; min-width: 1.3rem; }
+  .mcq-txt { flex: 1; }
+  .mcq-done .mcq-opt { cursor: default; }
+  .mcq-done .mcq-opt:hover { background: none; }
+  .mcq-opt.mcq-chose-ok, .mcq-done .mcq-opt.mcq-chose-ok:hover { background: var(--intu-bg); border-color: var(--forest); }
+  .mcq-opt.mcq-chose-no, .mcq-done .mcq-opt.mcq-chose-no:hover { background: var(--pit-bg); border-color: var(--pit-ink); }
+  .mcq-chose-ok input:checked ~ .mcq-sq { background: var(--forest); border-color: var(--forest); }
+  .mcq-chose-no input:checked ~ .mcq-sq { background: var(--pit-ink); border-color: var(--pit-ink); }
+  .mcq-icon { display: inline-flex; align-items: center; justify-content: center; width: 1.2rem; height: 1.2rem; margin-left: .45rem;
+    border-radius: 50%; color: #fff; font: 700 .75rem var(--sans); vertical-align: .05rem; }
+  .mcq-icon.ok { background: var(--forest); } .mcq-icon.no { background: var(--pit-ink); }
+  .mcq-tag { display: inline-block; margin-left: .7rem; padding: .1rem .5rem; border-radius: 3px; font: 700 .62rem var(--mono);
+    letter-spacing: .12em; color: #fff; vertical-align: .05rem; }
+  .mcq-tag.ok { background: var(--forest); } .mcq-tag.no { background: var(--pit-ink); } .mcq-tag.skip { background: var(--muted); }
+  .mcq-panel { margin-top: 1.6rem; padding: 1.1rem 1.2rem; border: 2px solid var(--ink); background: var(--paper); }
+  .mcq-btn { font: 700 .95rem var(--sans); padding: .7rem 1.3rem; margin: 0 .5rem .5rem 0; border-radius: 6px;
+    border: 2px solid var(--ink); background: var(--ink); color: #fff; cursor: pointer; }
+  .mcq-btn.alt { background: #fff; color: var(--ink); }
+  .mcq-btn:focus-visible { outline: 3px solid var(--ochre); outline-offset: 2px; }
+  .mcq-msg { font: .92rem var(--sans); color: var(--ink-soft); margin: .3rem 0; }
+  .mcq-score { font: 600 1.6rem var(--serif); margin: .4rem 0 .5rem; }
+  .mcq-stats { display: flex; flex-wrap: wrap; gap: .5rem; margin: 0 0 .9rem; font: .9rem var(--sans); }
+  .mcq-stats span { background: var(--tint); padding: .2rem .6rem; border-radius: 3px; }
+  .mcq-res table { border-collapse: collapse; font: .9rem var(--sans); }
+  .mcq-res td, .mcq-res th { padding: .25rem .9rem .25rem 0; text-align: left; }
+  .mcq-res .ok { color: var(--forest); font-weight: 700; } .mcq-res .no { color: var(--pit-ink); font-weight: 700; }
+  .mcq-sol { display: inline-block; margin: 0 0 .9rem; padding: .7rem 1.1rem; border-radius: 6px; background: var(--forest); color: #fff;
+    font: 700 1rem var(--sans); text-decoration: none; }
+  .mcq-sol:focus-visible { outline: 3px solid var(--ochre); outline-offset: 2px; }
+  .mcq-res a.mcq-wa { font-size: .85rem; }
+  @media (max-width: 760px) { .mcq-opt { padding: .6rem .5rem; } .mcq-btn { width: 100%; margin-right: 0; } .mcq-res td, .mcq-res th { padding-right: .6rem; } }
+  .mcq-copy { width: 100%; height: 12rem; font: .85rem var(--mono); margin-top: .5rem; }
+}
+@media print { .mcq-ui { display: none !important; } }`;
+  document.head.appendChild(css);
+
+  let answers = load();
+  const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+  const items = qs.map((q, i) => {
+    const qlabel = q.querySelector('.q-label'), labelText = qlabel.textContent;
+    const num = (labelText.match(/(\d+\.\d+)/) || [, String(i + 1)])[1];
+    const marks = Number((labelText.match(/(\d+)\s*MARKS/i) || [, 5])[1]);
+    q.id = 'mq' + num.replace('.', '-');
+    const list = q.querySelector('ol');
+    list.classList.add('mcq-list');
+    list.setAttribute('role', 'radiogroup');
+    list.setAttribute('aria-label', 'Question ' + num);
+    // each printed option becomes its own clickable row: the option text moves inside a label, nothing is duplicated
+    const opts = Array.from(list.children, (li, j) => {
+      const lab = el('label', 'mcq-opt'), inp = el('input', 'mcq-ui'), txt = el('span', 'mcq-txt');
+      inp.type = 'radio'; inp.name = 'mcq-' + i; inp.value = L[j];
+      inp.checked = answers[num] === L[j];
+      inp.addEventListener('change', () => { answers[num] = L[j]; save(answers); });
+      txt.append(...li.childNodes);
+      lab.append(inp, el('span', 'mcq-ui mcq-sq'), el('span', 'mcq-ui mcq-let', L[j] + '.'), txt);
+      li.append(lab);
+      return { lab, inp, txt };
+    });
+    const tag = el('span', 'mcq-ui mcq-tag');
+    tag.hidden = true;
+    qlabel.append(tag);
+    return { q, num, marks, ans: key[i], opts, tag };
+  });
+
+  const panel = el('div', 'mcq-ui mcq-panel');
+  const submit = el('button', 'mcq-btn', 'Submit answers'), again = el('button', 'mcq-btn alt', 'Try again'),
+        copy = el('button', 'mcq-btn alt', 'Copy results'), msg = el('p', 'mcq-msg'), res = el('div', 'mcq-res');
+  [submit, again, copy].forEach(b => { b.type = 'button'; });
+  again.hidden = copy.hidden = true;
+  msg.setAttribute('aria-live', 'polite');
+  panel.append(el('p', 'mcq-msg', 'Tick one option per question, then submit. Your choices stay saved in this browser until you submit or try again.'),
+               submit, again, copy, msg, res);
+  (document.querySelector('section.week') || document.body).append(panel);
+
+  let summary = '';
+  const icon = ok => el('span', 'mcq-ui mcq-icon ' + (ok ? 'ok' : 'no'), ok ? '✓' : '✗');
+  function mark() {
+    const blank = items.filter(it => !answers[it.num]);
+    if (blank.length && !window.confirm('Unanswered: ' + blank.map(it => it.num).join(', ') + '.\nSubmit anyway?')) return;
+    let score = 0, right = 0, wrong = 0;
+    const lines = [], rows = [];
+    items.forEach(it => {
+      const mine = answers[it.num], ok = mine === it.ans;
+      if (ok) { score += it.marks; right++; } else if (mine) wrong++;
+      it.q.classList.add('mcq-done');
+      it.opts.forEach((o, j) => {
+        o.inp.disabled = true;
+        if (L[j] === it.ans) o.txt.append(icon(true));
+        if (L[j] === mine) { o.lab.classList.add(ok ? 'mcq-chose-ok' : 'mcq-chose-no'); if (!ok) o.txt.append(icon(false)); }
+      });
+      it.tag.hidden = false;
+      it.tag.className = 'mcq-ui mcq-tag ' + (ok ? 'ok' : mine ? 'no' : 'skip');
+      it.tag.textContent = ok ? 'Correct' : mine ? 'Incorrect' : 'Not answered';
+      lines.push(it.num + ' ' + (mine || '-') + ' ' + (ok ? 'correct' : (mine ? 'wrong' : 'unanswered') + ' (answer ' + it.ans + ')'));
+      rows.push([it.num, mine || '-', it.ans, ok]);
+    });
+    const n = items.length, skipped = n - right - wrong, pct = Math.round(1000 * right / n) / 10;
+    const stats = ['Correct ' + right, 'Incorrect ' + wrong, 'Not answered ' + skipped, pct + '% correct (' + right + ' of ' + n + ')'];
+    summary = 'ECN240 Mock Midterm 1 results\n' + lines.join('\n') + '\n' + stats.slice(0, 3).join(', ') +
+              '\nPercentage correct: ' + pct + '% (' + right + ' of ' + n + ')\nScore: ' + score + '/100';
+    res.textContent = '';
+    res.append(el('div', 'mcq-score', 'Score: ' + score + ' / 100'));
+    const st = el('div', 'mcq-stats');
+    stats.forEach(s => st.append(el('span', '', s)));
+    res.append(st);
+    if (SOL) { const s = el('a', 'mcq-sol', 'See the worked solutions →'); s.href = SOL; res.append(s); }
+    const t = el('table'), head = el('tr');
+    ['Question', 'Yours', 'Correct', ''].concat(SOL ? ['Worked answer'] : []).forEach(h => head.append(el('th', '', h)));
+    t.append(head);
+    rows.forEach(([num, mine, ans, ok]) => {
+      const tr = el('tr'), a = el('a', '', num), td = el('td');
+      a.href = '#mq' + num.replace('.', '-');
+      td.append(a);
+      tr.append(td, el('td', '', mine), el('td', '', ans), el('td', ok ? 'ok' : 'no', ok ? '✓' : '✗'));
+      if (SOL) { const w = el('a', 'mcq-wa', 'Q' + num); w.href = SOL + '#q' + num.replace('.', '-'); const c = el('td'); c.append(w); tr.append(c); }
+      t.append(tr);
+    });
+    res.append(t);
+    submit.hidden = true; again.hidden = copy.hidden = false;
+    msg.textContent = '';
+    forget();
+    window.mcqSummary = summary;
+  }
+
+  function reset() {
+    answers = {}; forget(); summary = ''; window.mcqSummary = '';
+    items.forEach(it => {
+      it.q.classList.remove('mcq-done');
+      it.opts.forEach(o => { o.inp.checked = false; o.inp.disabled = false; o.lab.classList.remove('mcq-chose-ok', 'mcq-chose-no'); });
+      it.q.querySelectorAll('.mcq-icon').forEach(x => x.remove());
+      it.tag.hidden = true; it.tag.textContent = '';
+    });
+    res.textContent = ''; msg.textContent = '';
+    submit.hidden = false; again.hidden = copy.hidden = true;
+    window.scrollTo(0, 0);
+  }
+
+  function showText() {   // fallback when the async clipboard is blocked
+    const ta = el('textarea', 'mcq-copy');
+    ta.value = summary; ta.readOnly = true;
+    res.append(ta); ta.focus(); ta.select();
+    let done = false;
+    try { done = document.execCommand('copy'); } catch (e) { /* older fallback failed too */ }
+    msg.textContent = done ? 'Results copied. Paste them into the chat.' : 'Copy blocked by the browser: the text is selected below, press Ctrl+C.';
+  }
+  copy.addEventListener('click', () => {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(summary).then(() => { msg.textContent = 'Results copied. Paste them into the chat.'; }, showText);
+    } else showText();
+  });
+  submit.addEventListener('click', mark);
+  again.addEventListener('click', reset);
+})();
+</script>
+<!-- Cloudflare Web Analytics: cookieless page counts -->
+<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "ca2990a3d44d46d8bcb8c4cfde848cd8"}'></script>
+</body>
+</html>
