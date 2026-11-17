@@ -1432,22 +1432,29 @@ const BRAND_RIBBON = {   // band colour, author line, contacts, optional hairlin
 <section class="brand-end" data-guide="mock paper" data-topic="the ECN240 midterm" data-more="every topic of ECN240 Financial Statements and Analysis"></section>
 <script>
 /* Screen-only answer sheet in the style of a QMplus quiz: each printed option becomes a clickable row with a small
-   square tick box, then Submit marks it. Everything added carries class mcq-ui (hidden in print), and every layout
-   change sits in @media screen, so the PDF stays the plain paper. */
+   square tick box, a flag button sits beside each question, then Submit marks it. Everything added carries class
+   mcq-ui (hidden in print), and every layout change sits in @media screen, so the PDF stays the plain paper. */
 (function () {
   const KEY = 'aGlnZmZnaWZnaWhoaWhnZmhpZg==';   // answer letters, each shifted +5 then base64
   const key = Array.from(atob(KEY), c => String.fromCharCode(c.charCodeAt(0) - 5));
   const qs = Array.from(document.querySelectorAll('.question'));
   if (!qs.length || qs.length !== key.length) return;
-  const STORE = 'ecn240-mock1-answers', L = 'abcd';
+  const STORE = 'ecn240-mock1-answers', FSTORE = 'ecn240-mock1-flags', L = 'abcd';
   const SOL = document.documentElement.dataset.solutions || '';   // set only on a published copy: links to the worked solutions
-  const load = () => { try { return JSON.parse(localStorage.getItem(STORE)) || {}; } catch (e) { return {}; } };
-  const save = a => { try { localStorage.setItem(STORE, JSON.stringify(a)); } catch (e) { /* page works without storage */ } };
-  const forget = () => { try { localStorage.removeItem(STORE); } catch (e) { /* ignore */ } };
+  const MAIL = 'michaelzefi@gmail.com';
+  const REASONS = [   // key, menu text, short text (results, copy), colour
+    ['wrong', 'Question looks wrong', 'looks wrong', 'var(--ochre)'],
+    ['unclear', 'Unclear wording', 'unclear', 'var(--navy)'],
+    ['review', 'Review later (study this again)', 'review later', 'var(--ink)'],
+  ];
+  const read = k => { try { return JSON.parse(localStorage.getItem(k)) || {}; } catch (e) { return {}; } };
+  const write = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* page works without storage */ } };
+  const drop = k => { try { localStorage.removeItem(k); } catch (e) { /* ignore */ } };
 
   const css = document.createElement('style');
   css.textContent = `
 @media screen {
+  .question { position: relative; }
   .question ol.mcq-list { list-style: none; padding-left: 0; margin-top: .5rem; }
   .question ol.mcq-list > li { padding: 0; margin: 0 0 .15rem; }
   .mcq-opt { display: flex; align-items: flex-start; gap: .7rem; width: 100%; box-sizing: border-box; cursor: pointer;
@@ -1473,11 +1480,43 @@ const BRAND_RIBBON = {   // band colour, author line, contacts, optional hairlin
   .mcq-tag { display: inline-block; margin-left: .7rem; padding: .1rem .5rem; border-radius: 3px; font: 700 .62rem var(--mono);
     letter-spacing: .12em; color: #fff; vertical-align: .05rem; }
   .mcq-tag.ok { background: var(--forest); } .mcq-tag.no { background: var(--pit-ink); } .mcq-tag.skip { background: var(--muted); }
+
+  /* flag: outside the box on the right; inside, top right, on phones */
+  .mcq-flag { position: absolute; top: -1px; right: -52px; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 6px;
+    background: transparent; color: var(--muted); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+  .mcq-flag:hover { background: var(--tint); color: var(--ink); }
+  .mcq-flag:focus-visible { outline: 3px solid var(--ochre); outline-offset: 1px; }
+  .mcq-flag svg { width: 22px; height: 22px; }
+  .mcq-flag svg path.cloth { fill: none; }
+  .mcq-flag.on svg path.cloth { fill: currentColor; }
+  .mcq-tip { display: none; position: absolute; top: 46px; right: 0; z-index: 25; white-space: nowrap; background: var(--ink); color: #fff;
+    font: .78rem var(--sans); padding: .3rem .55rem; border-radius: 4px; pointer-events: none; text-align: left; }
+  .mcq-flag.on:hover .mcq-tip, .mcq-flag.on:focus-visible .mcq-tip { display: block; }
+  .mcq-menu { position: absolute; top: 46px; right: -52px; z-index: 30; width: 18.5rem; max-width: calc(100vw - 2rem); box-sizing: border-box;
+    background: #fff; border: 2px solid var(--ink); border-radius: 6px; box-shadow: 0 8px 24px rgba(0, 0, 0, .25); padding: .7rem .8rem .8rem;
+    font: .9rem var(--sans); color: var(--ink); color-scheme: light; }
+  .mcq-menu[hidden] { display: none; }
+  .question .mcq-menu-h { font: 700 .62rem var(--mono); letter-spacing: .14em; color: var(--muted); margin: 0 0 .4rem; text-transform: uppercase; }
+  .mcq-menu label.mcq-rs { display: flex; align-items: center; gap: .55rem; min-height: 40px; padding: 0 .35rem; border-radius: 4px; cursor: pointer; }
+  .mcq-menu label.mcq-rs:hover { background: var(--tint); }
+  .mcq-menu label.mcq-rs input { width: 1.05rem; height: 1.05rem; margin: 0; accent-color: var(--ink); }
+  .mcq-menu .mcq-dot { width: .7rem; height: .7rem; border-radius: 2px; flex: none; }
+  .mcq-menu .mcq-note { display: block; margin-top: .45rem; font-size: .8rem; color: var(--ink-soft); }
+  .mcq-menu .mcq-note input { display: block; width: 100%; box-sizing: border-box; margin-top: .2rem; padding: .45rem .5rem;
+    font: .9rem var(--sans); border: 1px solid var(--ink-soft); border-radius: 4px; }
+  .mcq-menu .mcq-note input:disabled { background: var(--bg); }
+  .mcq-menu-foot { display: flex; justify-content: space-between; align-items: center; gap: .5rem; margin-top: .6rem; }
+  .mcq-menu-foot button { font: 700 .85rem var(--sans); padding: .5rem .9rem; min-height: 40px; border-radius: 5px;
+    border: 2px solid var(--ink); background: var(--ink); color: #fff; cursor: pointer; }
+  .mcq-tell { font: 600 .82rem var(--sans); color: var(--navy); }
+  .mcq-tell[hidden] { display: none; }
+
   .mcq-panel { margin-top: 1.6rem; padding: 1.1rem 1.2rem; border: 2px solid var(--ink); background: var(--paper); }
   .mcq-btn { font: 700 .95rem var(--sans); padding: .7rem 1.3rem; margin: 0 .5rem .5rem 0; border-radius: 6px;
     border: 2px solid var(--ink); background: var(--ink); color: #fff; cursor: pointer; }
   .mcq-btn.alt { background: #fff; color: var(--ink); }
-  .mcq-btn:focus-visible { outline: 3px solid var(--ochre); outline-offset: 2px; }
+  .mcq-btn:focus-visible, .mcq-link:focus-visible { outline: 3px solid var(--ochre); outline-offset: 2px; }
+  .mcq-link { background: none; border: 0; padding: .3rem 0; font: 600 .85rem var(--sans); color: var(--navy); text-decoration: underline; cursor: pointer; }
   .mcq-msg { font: .92rem var(--sans); color: var(--ink-soft); margin: .3rem 0; }
   .mcq-score { font: 600 1.6rem var(--serif); margin: .4rem 0 .5rem; }
   .mcq-stats { display: flex; flex-wrap: wrap; gap: .5rem; margin: 0 0 .9rem; font: .9rem var(--sans); }
@@ -1485,18 +1524,54 @@ const BRAND_RIBBON = {   // band colour, author line, contacts, optional hairlin
   .mcq-res table { border-collapse: collapse; font: .9rem var(--sans); }
   .mcq-res td, .mcq-res th { padding: .25rem .9rem .25rem 0; text-align: left; }
   .mcq-res .ok { color: var(--forest); font-weight: 700; } .mcq-res .no { color: var(--pit-ink); font-weight: 700; }
+  .mcq-fl { margin-top: 1rem; font: .9rem var(--sans); }
+  .mcq-fl[hidden] { display: none; }
+  .mcq-fl h4 { font: 700 .66rem var(--mono); letter-spacing: .14em; text-transform: uppercase; margin: 0 0 .4rem; }
+  .mcq-fl ul { list-style: none; padding: 0; margin: 0 0 .3rem; }
+  .mcq-fl li { padding: .3rem 0; border-bottom: 1px dotted var(--rule-soft); }
+  .mcq-fl li a { margin-right: .5rem; }
+  .mcq-fl .mcq-chip { display: inline-block; color: #fff; font: 700 .62rem var(--mono); letter-spacing: .08em; padding: .08rem .4rem; border-radius: 3px; margin-right: .3rem; }
+  .mcq-fl .mcq-fnote { color: var(--ink-soft); font-style: italic; }
+  .mcq-fl .mcq-tell, .mcq-fl .mcq-wa2 { margin-left: .5rem; }
   .mcq-sol { display: inline-block; margin: 0 0 .9rem; padding: .7rem 1.1rem; border-radius: 6px; background: var(--forest); color: #fff;
     font: 700 1rem var(--sans); text-decoration: none; }
   .mcq-sol:focus-visible { outline: 3px solid var(--ochre); outline-offset: 2px; }
   .mcq-res a.mcq-wa { font-size: .85rem; }
-  @media (max-width: 760px) { .mcq-opt { padding: .6rem .5rem; } .mcq-btn { width: 100%; margin-right: 0; } .mcq-res td, .mcq-res th { padding-right: .6rem; } }
   .mcq-copy { width: 100%; height: 12rem; font: .85rem var(--mono); margin-top: .5rem; }
+}
+@media screen and (max-width: 760px) {
+  .question { padding-right: 3.2rem; }
+  .mcq-flag { top: 2px; right: 2px; }
+  .mcq-menu { right: 2px; }
+  .mcq-tip { right: 0; }
+  .mcq-opt { padding: .6rem .5rem; }
+  .mcq-btn { width: 100%; margin-right: 0; }
+  .mcq-res td, .mcq-res th { padding-right: .6rem; }
 }
 @media print { .mcq-ui { display: none !important; } }`;
   document.head.appendChild(css);
 
-  let answers = load();
+  let answers = read(STORE), flags = read(FSTORE), marked = null;
   const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+  const SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 21V3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>' +
+              '<path class="cloth" d="M5 4h12l-2.5 4L17 12H5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>';
+  const reasonsOf = num => REASONS.filter(r => flags[num] && flags[num][r[0]]);
+  const flagged = num => reasonsOf(num).length > 0;
+  const mailto = (num, f) => {
+    const why = REASONS.filter(r => f[r[0]] && r[0] !== 'review').map(r => r[1]).join(', ');
+    const body = 'Question ' + num + ' of ECN240 Mock Midterm 1.\nReason: ' + why + (f.note ? '\nNote: ' + f.note : '') + '\n';
+    return 'mailto:' + MAIL + '?subject=' + encodeURIComponent('ECN240 Mock 1 – Q' + num + ' flag') + '&body=' + encodeURIComponent(body);
+  };
+  const tellable = f => !!(f && (f.wrong || f.unclear));
+
+  let openMenu = null;
+  function closeMenu(focusBack) {
+    if (!openMenu) return;
+    const it = openMenu; openMenu = null;
+    it.menu.hidden = true; it.flag.setAttribute('aria-expanded', 'false');
+    if (focusBack) it.flag.focus();
+  }
+
   const items = qs.map((q, i) => {
     const qlabel = q.querySelector('.q-label'), labelText = qlabel.textContent;
     const num = (labelText.match(/(\d+\.\d+)/) || [, String(i + 1)])[1];
@@ -1511,7 +1586,7 @@ const BRAND_RIBBON = {   // band colour, author line, contacts, optional hairlin
       const lab = el('label', 'mcq-opt'), inp = el('input', 'mcq-ui'), txt = el('span', 'mcq-txt');
       inp.type = 'radio'; inp.name = 'mcq-' + i; inp.value = L[j];
       inp.checked = answers[num] === L[j];
-      inp.addEventListener('change', () => { answers[num] = L[j]; save(answers); });
+      inp.addEventListener('change', () => { answers[num] = L[j]; write(STORE, answers); });
       txt.append(...li.childNodes);
       lab.append(inp, el('span', 'mcq-ui mcq-sq'), el('span', 'mcq-ui mcq-let', L[j] + '.'), txt);
       li.append(lab);
@@ -1520,26 +1595,130 @@ const BRAND_RIBBON = {   // band colour, author line, contacts, optional hairlin
     const tag = el('span', 'mcq-ui mcq-tag');
     tag.hidden = true;
     qlabel.append(tag);
-    return { q, num, marks, ans: key[i], opts, tag };
-  });
 
+    // the flag button and its menu
+    const flag = el('button', 'mcq-ui mcq-flag');
+    flag.type = 'button';
+    flag.innerHTML = SVG;
+    flag.setAttribute('aria-haspopup', 'true');
+    flag.setAttribute('aria-expanded', 'false');
+    const tip = el('span', 'mcq-tip');
+    flag.append(tip);
+    const menu = el('div', 'mcq-ui mcq-menu');
+    menu.hidden = true;
+    menu.setAttribute('role', 'group');
+    menu.setAttribute('aria-label', 'Flag question ' + num);
+    menu.append(el('p', 'mcq-menu-h', 'Flag question ' + num));
+    const boxes = REASONS.map(([k, text, , colour]) => {
+      const lab = el('label', 'mcq-rs'), cb = el('input'), dot = el('span', 'mcq-dot');
+      cb.type = 'checkbox'; cb.value = k;
+      dot.style.background = colour;
+      lab.append(cb, dot, el('span', '', text));
+      menu.append(lab);
+      cb.addEventListener('change', () => { setFlag(num, k, cb.checked); });
+      return cb;
+    });
+    const noteLab = el('label', 'mcq-note', 'Note for Michael (optional, for the first two)');
+    const note = el('input');
+    note.type = 'text'; note.maxLength = 200;
+    note.addEventListener('input', () => { setNote(num, note.value); });
+    noteLab.append(note);
+    menu.append(noteLab);
+    const foot = el('div', 'mcq-menu-foot'), tell = el('a', 'mcq-tell', 'Tell Michael'), done = el('button', '', 'Done');
+    done.type = 'button';
+    tell.target = '_blank'; tell.rel = 'noopener';
+    done.addEventListener('click', () => closeMenu(true));
+    foot.append(tell, done);
+    menu.append(foot);
+    q.append(flag, menu);
+    const it = { q, num, marks, ans: key[i], opts, tag, flag, tip, menu, boxes, note, tell };
+    flag.addEventListener('click', e => {
+      e.stopPropagation();
+      if (openMenu === it) { closeMenu(true); return; }
+      closeMenu(false);
+      openMenu = it;
+      menu.hidden = false; flag.setAttribute('aria-expanded', 'true');
+      boxes[0].focus();
+    });
+    menu.addEventListener('click', e => e.stopPropagation());
+    menu.addEventListener('keydown', e => { if (e.key === 'Escape') { e.preventDefault(); closeMenu(true); } });
+    return it;
+  });
+  document.addEventListener('click', () => closeMenu(false));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && openMenu) closeMenu(true); });
+
+  function setFlag(num, k, on) {
+    const f = flags[num] || (flags[num] = {});
+    f[k] = on;
+    if (!REASONS.some(r => f[r[0]])) delete flags[num];
+    write(FSTORE, flags);
+    paintFlags();
+  }
+  function setNote(num, text) {
+    const f = flags[num] || (flags[num] = {});
+    f.note = text;
+    write(FSTORE, flags);
+    paintFlags(true);
+  }
+
+  // panel
   const panel = el('div', 'mcq-ui mcq-panel');
   const submit = el('button', 'mcq-btn', 'Submit answers'), again = el('button', 'mcq-btn alt', 'Try again'),
-        copy = el('button', 'mcq-btn alt', 'Copy results'), msg = el('p', 'mcq-msg'), res = el('div', 'mcq-res');
+        copy = el('button', 'mcq-btn alt', 'Copy results'), msg = el('p', 'mcq-msg'), res = el('div', 'mcq-res'),
+        fl = el('div', 'mcq-fl');
   [submit, again, copy].forEach(b => { b.type = 'button'; });
   again.hidden = copy.hidden = true;
   msg.setAttribute('aria-live', 'polite');
-  panel.append(el('p', 'mcq-msg', 'Tick one option per question, then submit. Your choices stay saved in this browser until you submit or try again.'),
-               submit, again, copy, msg, res);
+  panel.append(el('p', 'mcq-msg', 'Tick one option per question, then submit. Use the flag beside a question to mark it for review. Your choices stay saved in this browser.'),
+               submit, again, copy, msg, res, fl);
   (document.querySelector('section.week') || document.body).append(panel);
 
-  let summary = '';
+  function paintFlags(noteOnly) {
+    items.forEach(it => {
+      const f = flags[it.num] || {}, rs = reasonsOf(it.num), on = rs.length > 0;
+      it.flag.classList.toggle('on', on);
+      it.flag.style.color = on ? rs[0][3] : '';
+      it.flag.setAttribute('aria-label', 'Flag question ' + it.num + (on ? ' (flagged: ' + rs.map(r => r[2]).join(', ') + ')' : ''));
+      it.tip.textContent = on ? rs.map(r => r[1]).join(' · ') + (f.note ? ' · “' + f.note + '”' : '') : '';
+      if (!noteOnly) it.boxes.forEach((cb, j) => { cb.checked = !!f[REASONS[j][0]]; });
+      if (document.activeElement !== it.note) it.note.value = f.note || '';
+      it.note.disabled = !(f.wrong || f.unclear);
+      it.tell.hidden = !tellable(f);
+      if (tellable(f)) it.tell.href = mailto(it.num, f);
+      const cell = res.querySelector('td.mcq-fcell[data-num="' + it.num + '"]');
+      if (cell) cell.textContent = on ? '⚑' : '';
+    });
+    // flagged list
+    fl.textContent = '';
+    const list = items.filter(it => flagged(it.num));
+    fl.hidden = !list.length;
+    if (!list.length) return;
+    fl.append(el('h4', '', 'Flagged (' + list.length + ')'));
+    const ul = el('ul');
+    list.forEach(it => {
+      const f = flags[it.num], li = el('li'), a = el('a', '', 'Q' + it.num);
+      a.href = '#mq' + it.num.replace('.', '-');
+      li.append(a);
+      reasonsOf(it.num).forEach(r => { const c = el('span', 'mcq-chip', r[2]); c.style.background = r[3]; li.append(c); });
+      if (f.note) li.append(el('span', 'mcq-fnote', '“' + f.note + '”'));
+      if (SOL) { const w = el('a', 'mcq-wa2', 'worked answer'); w.href = SOL + '#q' + it.num.replace('.', '-'); li.append(w); }
+      if (tellable(f)) { const t = el('a', 'mcq-tell', 'Tell Michael'); t.href = mailto(it.num, f); t.target = '_blank'; t.rel = 'noopener'; li.append(t); }
+      ul.append(li);
+    });
+    fl.append(ul);
+    const clr = el('button', 'mcq-link', 'Clear flags');
+    clr.type = 'button';
+    clr.addEventListener('click', () => { flags = {}; drop(FSTORE); paintFlags(); msg.textContent = 'Flags cleared.'; });
+    fl.append(clr);
+  }
+
   const icon = ok => el('span', 'mcq-ui mcq-icon ' + (ok ? 'ok' : 'no'), ok ? '✓' : '✗');
   function mark() {
+    closeMenu(false);
     const blank = items.filter(it => !answers[it.num]);
     if (blank.length && !window.confirm('Unanswered: ' + blank.map(it => it.num).join(', ') + '.\nSubmit anyway?')) return;
     let score = 0, right = 0, wrong = 0;
-    const lines = [], rows = [];
+    const rows = [];
     items.forEach(it => {
       const mine = answers[it.num], ok = mine === it.ans;
       if (ok) { score += it.marks; right++; } else if (mine) wrong++;
@@ -1552,13 +1731,11 @@ const BRAND_RIBBON = {   // band colour, author line, contacts, optional hairlin
       it.tag.hidden = false;
       it.tag.className = 'mcq-ui mcq-tag ' + (ok ? 'ok' : mine ? 'no' : 'skip');
       it.tag.textContent = ok ? 'Correct' : mine ? 'Incorrect' : 'Not answered';
-      lines.push(it.num + ' ' + (mine || '-') + ' ' + (ok ? 'correct' : (mine ? 'wrong' : 'unanswered') + ' (answer ' + it.ans + ')'));
-      rows.push([it.num, mine || '-', it.ans, ok]);
+      rows.push([it.num, mine || '', it.ans, ok]);
     });
     const n = items.length, skipped = n - right - wrong, pct = Math.round(1000 * right / n) / 10;
+    marked = { rows, score, right, wrong, skipped, pct, n };
     const stats = ['Correct ' + right, 'Incorrect ' + wrong, 'Not answered ' + skipped, pct + '% correct (' + right + ' of ' + n + ')'];
-    summary = 'ECN240 Mock Midterm 1 results\n' + lines.join('\n') + '\n' + stats.slice(0, 3).join(', ') +
-              '\nPercentage correct: ' + pct + '% (' + right + ' of ' + n + ')\nScore: ' + score + '/100';
     res.textContent = '';
     res.append(el('div', 'mcq-score', 'Score: ' + score + ' / 100'));
     const st = el('div', 'mcq-stats');
@@ -1566,25 +1743,44 @@ const BRAND_RIBBON = {   // band colour, author line, contacts, optional hairlin
     res.append(st);
     if (SOL) { const s = el('a', 'mcq-sol', 'See the worked solutions →'); s.href = SOL; res.append(s); }
     const t = el('table'), head = el('tr');
-    ['Question', 'Yours', 'Correct', ''].concat(SOL ? ['Worked answer'] : []).forEach(h => head.append(el('th', '', h)));
+    ['Question', 'Yours', 'Correct', '', 'Flag'].concat(SOL ? ['Worked answer'] : []).forEach(h => head.append(el('th', '', h)));
     t.append(head);
     rows.forEach(([num, mine, ans, ok]) => {
-      const tr = el('tr'), a = el('a', '', num), td = el('td');
+      const tr = el('tr'), a = el('a', '', num), td = el('td'), fc = el('td', 'mcq-fcell');
       a.href = '#mq' + num.replace('.', '-');
       td.append(a);
-      tr.append(td, el('td', '', mine), el('td', '', ans), el('td', ok ? 'ok' : 'no', ok ? '✓' : '✗'));
+      fc.dataset.num = num;
+      tr.append(td, el('td', '', mine || '-'), el('td', '', ans), el('td', ok ? 'ok' : 'no', ok ? '✓' : '✗'), fc);
       if (SOL) { const w = el('a', 'mcq-wa', 'Q' + num); w.href = SOL + '#q' + num.replace('.', '-'); const c = el('td'); c.append(w); tr.append(c); }
       t.append(tr);
     });
     res.append(t);
     submit.hidden = true; again.hidden = copy.hidden = false;
     msg.textContent = '';
-    forget();
-    window.mcqSummary = summary;
+    drop(STORE);
+    paintFlags();
   }
 
-  function reset() {
-    answers = {}; forget(); summary = ''; window.mcqSummary = '';
+  function summary() {
+    const m = marked, lines = ['ECN240 Mock Midterm 1 results'];
+    m.rows.forEach(([num, mine, ans, ok]) => lines.push(num + ' ' + (mine || '-') + ' ' + (ok ? 'correct' : (mine ? 'wrong' : 'unanswered') + ' (answer ' + ans + ')')));
+    lines.push('Correct ' + m.right + ', Incorrect ' + m.wrong + ', Not answered ' + m.skipped);
+    lines.push('Percentage correct: ' + m.pct + '% (' + m.right + ' of ' + m.n + ')');
+    lines.push('Score: ' + m.score + '/100');
+    const fq = items.filter(it => flagged(it.num));
+    if (fq.length) {
+      lines.push('Flags:');
+      fq.forEach(it => {
+        const f = flags[it.num];
+        lines.push(it.num + ' flagged: ' + reasonsOf(it.num).map(r => r[2]).join(', ') + (f.note ? ' ("' + f.note + '")' : ''));
+      });
+    }
+    return lines.join('\n');
+  }
+  window.mcqSummary = () => (marked ? summary() : '');
+
+  function reset() {   // clears answers and marking; flags stay
+    answers = {}; drop(STORE); marked = null;
     items.forEach(it => {
       it.q.classList.remove('mcq-done');
       it.opts.forEach(o => { o.inp.checked = false; o.inp.disabled = false; o.lab.classList.remove('mcq-chose-ok', 'mcq-chose-no'); });
@@ -1593,24 +1789,27 @@ const BRAND_RIBBON = {   // band colour, author line, contacts, optional hairlin
     });
     res.textContent = ''; msg.textContent = '';
     submit.hidden = false; again.hidden = copy.hidden = true;
+    paintFlags();
     window.scrollTo(0, 0);
   }
 
-  function showText() {   // fallback when the async clipboard is blocked
+  function showText(text) {   // fallback when the async clipboard is blocked
     const ta = el('textarea', 'mcq-copy');
-    ta.value = summary; ta.readOnly = true;
+    ta.value = text; ta.readOnly = true;
     res.append(ta); ta.focus(); ta.select();
     let done = false;
     try { done = document.execCommand('copy'); } catch (e) { /* older fallback failed too */ }
     msg.textContent = done ? 'Results copied. Paste them into the chat.' : 'Copy blocked by the browser: the text is selected below, press Ctrl+C.';
   }
   copy.addEventListener('click', () => {
+    const text = summary();
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(summary).then(() => { msg.textContent = 'Results copied. Paste them into the chat.'; }, showText);
-    } else showText();
+      navigator.clipboard.writeText(text).then(() => { msg.textContent = 'Results copied. Paste them into the chat.'; }, () => showText(text));
+    } else showText(text);
   });
   submit.addEventListener('click', mark);
   again.addEventListener('click', reset);
+  paintFlags();
 })();
 </script>
 <!-- Cloudflare Web Analytics: cookieless page counts -->
