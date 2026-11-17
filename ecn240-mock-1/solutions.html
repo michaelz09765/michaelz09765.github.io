@@ -1319,6 +1319,7 @@ const BRAND_RIBBON = {   // band colour, author line, contacts, optional hairlin
     </div>
 </div>
 
+
 <div class="panel">
   <div class="toc four">
     <div class="toc-col c1"><div class="code">Q1.1</div><div class="name">1.1 to 1.5</div>
@@ -1755,7 +1756,24 @@ const BRAND_RIBBON = {   // band colour, author line, contacts, optional hairlin
   <div class="concept-box">
     <div class="concept-label">The big idea: cash and expense count different months</div>
     <div class="concept-text tex">
-      <p class="lead">Cash paid in 2026 includes last year&rsquo;s unpaid bill and misses this year&rsquo;s unpaid one, so turn the accrual formula around.</p>
+      <p class="lead">Cash paid in 2026 includes last year&rsquo;s unpaid bill and misses this year&rsquo;s unpaid one. The question gives you the expense and asks for the cash, so you run the accrual rule backwards.</p>
+    </div>
+  </div>
+
+  <div class="formula-box">
+    <div class="formula-label">The trap</div>
+    <div class="formula-name">Why 6,700 Looks Right</div>
+    <div class="formula-render tex">
+      <p class="lead">6,700 is the accrual formula you learned for real Q4, with the question&rsquo;s three numbers dropped in: $6{,}500 - 500 + 700$.</p>
+      <ul class="pts">
+        <li><b>It feels safe:</b> same formula, same kind of numbers, an answer near 6,500.</li>
+        <li><b>Where it breaks:</b> that formula turns <i>cash paid</i> into <i>expense</i>. Here 6,500 is already the expense, so you put it in the &ldquo;paid&rdquo; slot, and the formula moves it the wrong way.</li>
+        <li><b>The check exposes it:</b> if DEF had paid 6,700, its expense would be $6{,}700 - 500 + 700 = 6{,}900$, not the 6,500 the question states.</li>
+      </ul>
+      <ul class="wr tex">
+        <li class="no">$\text{Paid} = 6{,}500 - 500 + 700 = 6{,}700$: the expense formula, run backwards.</li>
+        <li class="yes">$\text{Paid} = \text{Expense} + \text{opening} - \text{closing} = 6{,}500 + 500 - 700 = 6{,}300$.</li>
+      </ul>
     </div>
   </div>
 
@@ -1764,17 +1782,46 @@ const BRAND_RIBBON = {   // band colour, author line, contacts, optional hairlin
     <div class="formula-name">Accrual</div>
     <div class="formula-render tex">$$\text{Expense} = \text{Paid} - \text{opening accrual} + \text{closing accrual}$$</div>
     <div class="formula-note">&ldquo;Expenses are recorded when incurred, regardless of when cash is paid&rdquo; (Lecture 2). An accrual is an expense incurred but not yet paid: a liability.</div>
-    <div class="where-block tex"><span class="where-label">IN PLAIN WORDS</span>Last year&rsquo;s bill paid this year is not this year&rsquo;s cost, so you take it out; this year&rsquo;s unpaid bill is, so you add it.</div>
+    <div class="where-block tex"><span class="where-label">IN PLAIN WORDS</span>
+      <ul class="pts">
+        <li><b>Opening accrual (500):</b> last year&rsquo;s rent you paid this year. Cash, yes; this year&rsquo;s cost, no: take it out.</li>
+        <li><b>Closing accrual (700):</b> this year&rsquo;s rent you have not paid yet. Cost, yes; cash, no: add it.</li>
+        <li><b>Backwards</b> (expense to cash): both signs flip, $\text{Paid} = \text{Expense} + \text{opening} - \text{closing}$.</li>
+      </ul>
+    </div>
   </div>
 
-  <p class="try tex">Rearrange the formula for Paid, then put in 6,500, 500 and 700.</p>
+  <p class="try tex">Before any formula, fill the table below: which of the three pieces of rent did DEF pay for with 2026 cash?</p>
+
+  <div class="formula-box">
+    <div class="formula-label">Working</div>
+    <div class="formula-name">The Method From Scratch</div>
+    <div class="formula-render steps tex">
+      <div class="eqline"><span class="k">1</span>Split the rent into three pieces by when it was used and when it was paid.</div>
+      <div class="eqline"><span class="k">2</span>December 2025 rent (500), paid January 2026: 2026 cash, not 2026 expense.</div>
+      <div class="eqline"><span class="k">3</span>December 2026 rent (700), unpaid at 31 December: 2026 expense, not cash.</div>
+      <div class="eqline"><span class="k">4</span>The rest of 2026&rsquo;s rent is both: $6{,}500 - 700 = 5{,}800$.</div>
+      <div class="eqline"><span class="k">5</span>Add each column: cash 6,300; expense 6,500 &#10003;</div>
+    </div>
+    <div class="formula-render tex">
+      <table class="plan bs">
+        <thead><tr><th class="txt">Piece of rent</th><th>Cash paid in 2026</th><th>2026 expense</th></tr></thead>
+        <tbody>
+          <tr><td class="txt">December 2025, paid January 2026</td><td>500</td><td>0</td></tr>
+          <tr><td class="txt">2026 rent paid during 2026</td><td>5,800</td><td>5,800</td></tr>
+          <tr><td class="txt">December 2026, still unpaid</td><td>0</td><td>700</td></tr>
+          <tr class="tot"><td>Total</td><td class="hl">6,300</td><td>6,500</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="formula-note">The table works in either direction, so you never need to remember which way the signs go.</div>
+  </div>
 
   <div class="formula-box important">
     <div class="formula-label">Answer</div>
     <div class="formula-name">(a) 6,300</div>
     <div class="formula-render tex">
-      <div class="eqline">$\text{Paid} = 6{,}500 + 500 - 700 = 6{,}300$</div>
-      <div class="eqline">Check: $6{,}300 - 500 + 700 = 6{,}500$ &#10003;</div>
+      <div class="eqline">$\text{Paid} = 6{,}500 + 500 - 700 = 6{,}300$; check: $6{,}300 - 500 + 700 = 6{,}500$ &#10003;</div>
       <ul class="wr tex">
         <li class="yes"><b>a. 6,300.</b> The expense formula, solved for cash.</li>
         <li class="no"><b>b. 6,700.</b> Uses the expense formula the wrong way round: $6{,}500 - 500 + 700$.</li>
@@ -1798,8 +1845,11 @@ const BRAND_RIBBON = {   // band colour, author line, contacts, optional hairlin
     </div>
   </div>
 
-  <div class="glance twist tex" data-note="What if DEF owed no rent at the end of 2026?">
+  <div class="glance twist tex" data-note="Practice 1: what if DEF owed no rent at the end of 2026?">
     <div><b>Answer</b>Paid $= 6{,}500 + 500 - 0 = 7{,}000$.</div>
+  </div>
+  <div class="glance twist tex" data-note="Practice 2: electricity expense 9,000; accrued 800 at the start of the year and 300 at the end. Cash paid?">
+    <div><b>Answer</b>$9{,}000 + 800 - 300 = 9{,}500$. Check: $9{,}500 - 800 + 300 = 9{,}000$ &#10003;</div>
   </div>
 </section>
 
@@ -2412,39 +2462,90 @@ const BRAND_RIBBON = {   // band colour, author line, contacts, optional hairlin
   <div class="glance tex"><div><b>Answer</b>(c) 13,300</div></div>
 
   <div class="concept-box">
-    <div class="concept-label">The big idea: sort, then subtract</div>
+    <div class="concept-label">The big idea: every income-statement line counts, by its side</div>
     <div class="concept-text tex">
-      <p class="lead">Send each line to the income statement or the balance sheet, then build profit from the income-statement lines only.</p>
+      <p class="lead">Profit is the income-statement credits minus the income-statement debits. A line&rsquo;s side decides its effect, whatever its name sounds like.</p>
     </div>
   </div>
 
-  <p class="try tex">Mark each line IS or BS. You should find seven IS lines.</p>
+  <div class="formula-box">
+    <div class="formula-label">The trap</div>
+    <div class="formula-name">Why 16,300 Looks Right</div>
+    <div class="formula-render tex">
+      <p class="lead">16,300 is what you get when you start from sales and take off every line that sounds like a cost: $80{,}000 - 41{,}000 + 1{,}200 - 12{,}500 - 6{,}000 - 5{,}400$.</p>
+      <ul class="pts">
+        <li><b>It feels complete:</b> cost of goods sold, wages, rent and depreciation are all there, and the discount is on the right side.</li>
+        <li><b>Where it breaks:</b> Sales returns (3,000, a debit) gets skipped. Its name sounds like sales, so it never makes the list of costs, and it is not revenue either.</li>
+        <li><b>What it is:</b> a contra-revenue account. &ldquo;Sales &hellip; in the income statement are shown net of returns&rdquo; (Lecture 5). Like any debit on the income statement, it lowers profit: $16{,}300 - 3{,}000 = 13{,}300$.</li>
+      </ul>
+      <ul class="wr tex">
+        <li class="no">Pick out the costs by their names, so returns slip through: 16,300.</li>
+        <li class="yes">Total every income-statement debit and credit by its side: $81{,}200 - 67{,}900 = 13{,}300$.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="formula-box">
+    <div class="formula-label">Definition</div>
+    <div class="formula-name">Which Side an Account Sits On</div>
+    <div class="formula-render short tex">
+      <div class="eqline"><span class="k">DEBIT</span>assets, expenses, and contra-revenue (sales returns)</div>
+      <div class="eqline"><span class="k">CREDIT</span>liabilities, equity, revenue, other income, and contra-assets (accumulated depreciation)</div>
+    </div>
+    <div class="where-block tex"><span class="where-label">IN PLAIN WORDS</span>
+      <ul class="pts">
+        <li><b>Left (debit):</b> what the company owns, and what it gives up to earn profit.</li>
+        <li><b>Right (credit):</b> what it owes, what the owners put in, and what it earns.</li>
+        <li><b>A &ldquo;contra&rdquo; account</b> sits on the opposite side to the account it reduces: returns cut sales, accumulated depreciation cuts equipment.</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="try tex">Cover the last two columns below and say, for each line, where it goes and why it sits on its side.</p>
 
   <div class="formula-box">
     <div class="formula-label">Working</div>
-    <div class="formula-name">Where Each Line Goes</div>
+    <div class="formula-name">Every Account, Its Side and Its Statement</div>
     <div class="formula-render tex">
-      <table class="plan bs" style="font-size:.86rem; line-height:1.3">
-        <thead><tr><th class="txt">Account</th><th>Debit</th><th>Credit</th><th class="txt">Goes to</th></tr></thead>
+      <table class="plan bs" style="font-size:.84rem; line-height:1.28">
+        <thead><tr><th class="txt">Account</th><th>Dr</th><th>Cr</th><th class="txt">Goes to</th><th class="txt">Why this side</th></tr></thead>
         <tbody>
-          <tr class="sec"><td colspan="4">Income statement</td></tr>
-          <tr><td class="txt">Sales</td><td></td><td>80,000</td><td class="txt">IS &middot; revenue</td></tr>
-          <tr><td class="txt">Sales returns</td><td>3,000</td><td></td><td class="txt">IS &middot; less sales</td></tr>
-          <tr><td class="txt">Cost of goods sold</td><td>41,000</td><td></td><td class="txt">IS &middot; expense</td></tr>
-          <tr><td class="txt hl">Discounts received</td><td></td><td class="hl">1,200</td><td class="txt hl">IS &middot; income</td></tr>
-          <tr><td class="txt">Wages</td><td>12,500</td><td></td><td class="txt">IS &middot; expense</td></tr>
-          <tr><td class="txt">Rent</td><td>6,000</td><td></td><td class="txt">IS &middot; expense</td></tr>
-          <tr><td class="txt">Depreciation expense</td><td>5,400</td><td></td><td class="txt">IS &middot; expense</td></tr>
-          <tr class="sec"><td colspan="4">Balance sheet</td></tr>
-          <tr><td class="txt">Cash, receivables, inventory</td><td>33,000</td><td></td><td class="txt">BS &middot; assets</td></tr>
-          <tr><td class="txt hl">Rent prepayment</td><td class="hl">1,500</td><td></td><td class="txt hl">BS &middot; asset</td></tr>
-          <tr><td class="txt">Equipment, acc. depreciation</td><td>48,000</td><td>21,600</td><td class="txt">BS &middot; asset</td></tr>
-          <tr><td class="txt">Trade payables</td><td></td><td>8,600</td><td class="txt">BS &middot; liability</td></tr>
-          <tr><td class="txt">Share capital, retained profits</td><td></td><td>39,000</td><td class="txt">BS &middot; equity</td></tr>
-          <tr class="tot"><td>Total</td><td>150,400</td><td>150,400</td><td class="txt"></td></tr>
+          <tr class="sec"><td colspan="5">Income statement</td></tr>
+          <tr><td class="txt">Sales</td><td></td><td>80,000</td><td class="txt">IS &middot; revenue</td><td class="txt">revenue: credit</td></tr>
+          <tr><td class="txt hl">Sales returns</td><td class="hl">3,000</td><td></td><td class="txt hl">IS &middot; less sales</td><td class="txt hl">cuts revenue: debit</td></tr>
+          <tr><td class="txt">Cost of goods sold</td><td>41,000</td><td></td><td class="txt">IS &middot; expense</td><td class="txt">expense: debit</td></tr>
+          <tr><td class="txt">Discounts received</td><td></td><td>1,200</td><td class="txt">IS &middot; income</td><td class="txt">other income: credit</td></tr>
+          <tr><td class="txt">Wages</td><td>12,500</td><td></td><td class="txt">IS &middot; expense</td><td class="txt">expense: debit</td></tr>
+          <tr><td class="txt">Rent</td><td>6,000</td><td></td><td class="txt">IS &middot; expense</td><td class="txt">this year&rsquo;s rent only</td></tr>
+          <tr><td class="txt">Depreciation expense</td><td>5,400</td><td></td><td class="txt">IS &middot; expense</td><td class="txt">value used up: debit</td></tr>
+          <tr class="sec"><td colspan="5">Balance sheet</td></tr>
+          <tr><td class="txt">Cash</td><td>15,500</td><td></td><td class="txt">BS &middot; asset</td><td class="txt">money held</td></tr>
+          <tr><td class="txt">Trade receivables</td><td>11,000</td><td></td><td class="txt">BS &middot; asset</td><td class="txt">customers owe it</td></tr>
+          <tr><td class="txt">Inventory</td><td>6,500</td><td></td><td class="txt">BS &middot; asset</td><td class="txt">closing stock</td></tr>
+          <tr><td class="txt">Rent prepayment</td><td>1,500</td><td></td><td class="txt">BS &middot; asset</td><td class="txt">rent for next year</td></tr>
+          <tr><td class="txt">Equipment at cost</td><td>48,000</td><td></td><td class="txt">BS &middot; asset</td><td class="txt">asset: debit</td></tr>
+          <tr><td class="txt">Acc. depreciation</td><td></td><td>21,600</td><td class="txt">BS &middot; contra</td><td class="txt">cuts equipment: credit</td></tr>
+          <tr><td class="txt">Trade payables</td><td></td><td>8,600</td><td class="txt">BS &middot; liability</td><td class="txt">owed to suppliers</td></tr>
+          <tr><td class="txt">Share capital</td><td></td><td>30,000</td><td class="txt">BS &middot; equity</td><td class="txt">owners&rsquo; money</td></tr>
+          <tr><td class="txt">Retained profits</td><td></td><td>9,000</td><td class="txt">BS &middot; equity</td><td class="txt">past years&rsquo; profit</td></tr>
+          <tr class="tot"><td>Total</td><td>150,400</td><td>150,400</td><td class="txt"></td><td class="txt"></td></tr>
         </tbody>
       </table>
     </div>
+    <div class="formula-note">Cost of goods sold already uses closing inventory, so inventory stays on the balance sheet.</div>
+  </div>
+
+  <div class="formula-box">
+    <div class="formula-label">Working</div>
+    <div class="formula-name">Profit in Three Lines, Then Two Checks</div>
+    <div class="formula-render steps tex">
+      <div class="eqline"><span class="k">1</span>IS credits $= 80{,}000 + 1{,}200 = 81{,}200$</div>
+      <div class="eqline"><span class="k">2</span>IS debits $= 3{,}000 + 41{,}000 + 12{,}500 + 6{,}000 + 5{,}400 = 67{,}900$</div>
+      <div class="eqline"><span class="k">3</span>Profit $= 81{,}200 - 67{,}900 = 13{,}300$</div>
+      <div class="eqline"><span class="k">4</span>Statement layout: net revenue 77,000; gross profit 36,000; profit 13,300 &#10003;</div>
+      <div class="eqline"><span class="k">5</span>Net assets $= 82{,}500 - 21{,}600 - 8{,}600 = 52{,}300 = 30{,}000 + 9{,}000 + 13{,}300$ &#10003;</div>
+    </div>
+    <div class="formula-note">Step 5 is the balance-sheet test: assets minus liabilities must equal capital plus retained profits plus this year&rsquo;s profit. A wrong profit fails it.</div>
   </div>
 
   <div class="formula-box important">
@@ -2475,6 +2576,7 @@ const BRAND_RIBBON = {   // band colour, author line, contacts, optional hairlin
           <span><i style="background:var(--tint);border:1px solid var(--accent)"></i>Income added</span>
         </div>
         <div class="fig-caption">Fig 1.11 &middot; VWX&rsquo;s income statement as a waterfall</div></div>
+      <ul class="pts"><li><b>The second bar</b> is the step option b skips: returns take 3,000 off sales before anything else.</li></ul>
     </div>
   </div>
 
@@ -2482,12 +2584,15 @@ const BRAND_RIBBON = {   // band colour, author line, contacts, optional hairlin
     <div class="concept-label">Exam pitfall: received or granted?</div>
     <ul class="wr tex">
       <li class="no">Every discount is an expense.</li>
-      <li class="yes">&ldquo;Discount received are considered as other operating income, discounts granted as other operating expenses&rdquo; (Lecture 5). Real Q14 had discounts granted, a debit; here they are received, a credit. Inventory in an adjusted trial balance is already the closing figure, so it stays on the balance sheet.</li>
+      <li class="yes">&ldquo;Discount received are considered as other operating income, discounts granted as other operating expenses&rdquo; (Lecture 5). Real Q14 had discounts granted, a debit; here they are received, a credit.</li>
     </ul>
   </div>
 
-  <div class="glance twist tex" data-note="What if the 1,200 had been discounts granted (a debit) instead?">
+  <div class="glance twist tex" data-note="Practice 1: what if the 1,200 had been discounts granted (a debit) instead?">
     <div><b>Answer</b>$13{,}300 - 2{,}400 = 10{,}900$, option a.</div>
+  </div>
+  <div class="glance twist tex" data-note="Practice 2: add a bank loan of 2,000 (credit), interest paid of 400 (debit) and 1,600 more cash. Profit?">
+    <div><b>Answer</b>12,900. The loan and the cash sit on the balance sheet; only the 400 interest is an income-statement debit.</div>
   </div>
 </section>
 
